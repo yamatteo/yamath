@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% import "forms.html" as forms %}
+
+{% block main %}
+<div class="jumbotron">
+  <div class="container">
+    <h1 class="display-3">Dettaglio classe</h1>
+  </div>
+</div>
+
+<div class="container list1">
+    {{ forms.string_row('Nome', classroom.name, true, classroom, 'name', 'classroomEditName', 'teacherClassroom') }}
+    {{ forms.reflist_row('Studenti', classroom, 'students', 'classroomAddStudent', free_students, 'classroomRemStudent', classroom.students, 'teacherClassroom') }}
+    {{ forms.reflist_row('Nodes', classroom, 'nodes', 'classroomAddNode', free_nodes, 'classroomRemNode', classroom.nodes, 'teacherClassroom') }}
+  <hr>
+</div>
+{% endblock %}

@@ -1,0 +1,108 @@
+{% macro string_row(name, value='', edit=false, edit_obj=None, edit_attr=None, edit_view=None, redirect_view='dashboard') %}
+<div class="row">
+    <div class="col-md-1 list1-dt">{{ name }}</div>
+    <div class="col-md-9 list1-dd">{{ value }}</div>
+    {% if edit %}
+    <div class="col-md-2 list1-dd"><a href="#edit_name">edit</a></div>
+    <div id="edit_name" class="modalDialog">
+        <div>
+            <a href="#" title="Close" class="close">X</a>
+            <h2>Edit</h2>
+            <form action="{{ url_for(edit_view, primary_id=edit_obj.id) }}" method="POST">
+              <input type="text" name="{{ edit_attr }}" value="{{ edit_obj[edit_attr] }}">
+              <input type="hidden" name="redirect_view" value="{{ redirect_view }}">
+              <input type="submit" value="save">
+            </form>
+        </div>
+    </div>
+    {% else %}
+    <div class="col-md-2 list1-dd"></div>
+    {% endif %}
+</div>
+{% endmacro %}
+
+{% macro reflist_row(name, obj, attr, add_view, add_list, rem_view, rem_list, redirect_view) %}
+<div class="row">
+    <div class="col-md-1 list1-dt">{{ name }}</div>
+    <div class="col-md-7 list1-dd">
+        {{ obj[attr] }}
+    </div>
+    <div class="col-md-2 list1-dd">
+        <form action="{{ url_for(rem_view, primary_id=obj.id) }}" method="POST">
+            <select class="js-example-basic-single" name="secondary_id" style="width: 100%;"  onchange="this.form.submit()">
+                <option value="" disabled selected>Remove</option>
+                {% for elem in rem_list %}
+                <option value="{{ elem.id }}">{{ elem }}</option>
+                {% endfor %}
+            </select>
+            <input type="hidden" name="redirect_view" value="{{ redirect_view }}">
+        </form>
+    </div>
+    <div class="col-md-2 list1-dd">
+        <form action="{{ url_for(add_view, primary_id=obj.id) }}" method="POST">
+            <select class="js-example-basic-single" name="secondary_id" style="width: 100%;"  onchange="this.form.submit()">
+                <option value="" disabled selected>Append</option>
+                {% for elem in add_list %}
+                <option value="{{ elem.id }}">{{ elem }}</option>
+                {% endfor %}
+            </select>
+            <input type="hidden" name="redirect_view" value="{{ redirect_view }}">
+        </form>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro fixed_row(name, obj, attr) %}
+<div class="row">
+    <div class="col-md-1 list1-dt">{{ name }}</div>
+    <div class="col-md-9 list1-dd">
+        {{ obj[attr] }}
+    </div>
+</div>
+{% endmacro %}
+
+{% macro ref_row(name, obj, attr, set_view, set_list, redirect_view) %}
+<div class="row">
+    <div class="col-md-1 list1-dt">{{ name }}</div>
+    <div class="col-md-9 list1-dd">
+        {{ obj[attr] }}
+    </div>
+    <div class="col-md-2 list1-dd">
+        <form action="{{ url_for(set_view, primary_id=obj.id) }}" method="POST">
+            <select class="js-example-basic-single" name="secondary_id" style="width: 100%;"  onchange="this.form.submit()">
+                <option value="" disabled selected>Select</option>
+                <option value="">None</option>
+                {% for elem in set_list %}
+                <option value="{{ elem.id }}">{{ elem }}</option>
+                {% endfor %}
+            </select>
+            <input type="hidden" name="redirect_view" value="{{ redirect_view }}">
+        </form>
+    </div>
+</div>
+{% endmacro %}
+
+
+
+{% macro modal_row(name, value='', edit=false, edit_attr='') %}
+<div class="row">
+    <div class="col-md-1 list1-dt">{{ name }}</div>
+    <div class="col-md-9 list1-dd">{{ value }}</div>
+    <div class="col-md-2 list1-dd"><a href="#edit_name">edit</a></div>
+    <div id="edit_name" class="modalDialog">
+    <div>
+    <a href="#" title="Close" class="close">X</a>
+    <h2>Modifica</h2>
+    <form action="{{ url_for('adminNodeEditName', node_id=node.id) }}" method="POST">
+      <input type="text" name="name" value="{{ node.name }}">
+      <input type="submit" value="edit">
+    </form>
+    </div>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro textarea(name, value='', rows=10, cols=40) %}
+    <textarea name="{{ name }}" rows="{{ rows }}" cols="{{ cols
+        }}">{{ value|e }}</textarea>
+{% endmacro %}

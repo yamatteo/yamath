@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block main %}
+<div class="jumbotron">
+  <div class="container">
+    <h1 class="display-3">Pannello nodes</h1>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-4">
+      <form name="addNode" action="{{ url_for('adminAddNode') }}" method="post">
+        <div class="form-group row">
+          <input type="text" class="form-control col-sm-8" name="name" placeholder="name of the new node">
+          <input type="submit" class="btn btn-outline-success col-sm-3" value="add">
+        </div>
+      </form>
+    </div>
+    <div class="col-md-4">
+      <form name="remNode" action="{{ url_for('adminRemNode') }}" method="post">
+        <div class="form-group row">
+          <input type="text" class="form-control col-sm-8" name="name" placeholder="node to remove">
+          <input type="submit" class="btn btn-outline-danger col-sm-3" value="remove">
+        </div>
+      </form>
+    </div>
+  </div>
+  <hr>
+</div>
+
+<div class="container list1">
+  {% for node in nodes %}
+  <div class="row">
+    <div class="col-md-3 list1-dt"><a href="{{ url_for('adminNodeDetail', node_id=node.id) }}">{{ node.name or '-no name node-' }}</a></div>
+    <div class="col-md-9 list1-dd">{{ node.description }}</div>
+  </div>
+  {% endfor %}
+  <hr>
+</div>
+{% endblock %}

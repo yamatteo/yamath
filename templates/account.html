@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% import "forms.html" as forms %}
+
+{% block main %}
+<div class="jumbotron">
+  <div class="container">
+    <h1 class="display-3">Dettaglio profilo</h1>
+  </div>
+</div>
+
+<div class="container list1">
+    {{ forms.string_row('Email', current_user.email) }}
+    {{ forms.string_row('Nome', current_user.nickname, true, current_user, 'nickname', 'accountEditNickname', 'account') }}
+    <div class="row">
+        <div class="col-md-1 list1-dt">Password</div>
+        <div class="col-md-9 list1-dd">{{ current_user.hashed }}</div>
+        <div class="col-md-2 list1-dd"><a href="#edit_hashed">edit</a></div>
+        <div id="edit_hashed" class="modalDialog">
+          <div>
+            <a href="#" title="Close" class="close">X</a>
+            <h2>Modifica</h2>
+            <form action="{{ url_for('accountEditHashed') }}" method="POST">
+              <input type="text" name="pw1" placeholder="nuova password">
+              <input type="text" name="pw2" placeholder="nuova password (ripeti)">
+              <input type="submit" value="Invia">
+            </form>
+          </div>
+        </div>
+    </div>
+    {{ forms.ref_row('Prof', current_user, 'teacher', 'accountSetTeacher', teachers, 'account') }}
+    
+    <div class="row">
+        <div class="col-md-1 list1-dt">Classi</div>
+        <div class="col-md-11 list1-dd">
+          {% if current_user.teacher %}
+            {% if current_user.classrooms %}
+              {% for classroom in current_user.classrooms %}
+              {{ classroom.name }},
+              {% endfor %}
+            {% else %}
+              chiedi al tuo professore di inserirti in una classe
+            {% endif %}
+          {% else %}
+            indica il tuo professore nella riga corrispondente
+          {% endif %}
+        </div>
+    </div>
+  <hr>
+</div>
+{% endblock %}
+
+{% block omain %}
+<div class="jumbotron">
+  <div class="container">
+    <h1 class="display-3">I tuoi dati</h1>
+  </div>
+</div>
+
+<div class="container list1">
+    {
+  <div class="row">
+    <div class="col-md-3 list1-dt">Indirizzo email</div>
+    <div class="col-md-9 list1-dd">{{ current_user.email }}</div>
+  </div>
+  <div class="row">
+    <div class="col-md-3 list1-dt">Soprannome</div>
+    <div class="col-md-7 list1-dd">{{ current_user.nickname or '' }}</div>
+    <div class="col-md-2 list1-dd"><a href="#edit_nickname">edit</a></div>
+    <div id="edit_nickname" class="modalDialog">
+      <div>
+        <a href="#" title="Close" class="close">X</a>
+        <h2>Modifica</h2>
+        <form action="{{ url_for('accountEditNickname') }}" method="POST">
+          <input type="text" name="nickname" value="{{ current_user.nickname or '' }}">
+          <input type="submit" value="Invia">
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 list1-dt">Professore</div>
+    <div class="col-md-7 list1-dd">{{ current_user.teacher.nickname or current_user.teacher.email }}</div>
+    <div class="dropdown col-md-2 list1-dd">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown">
+          Scegli professore
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <form action="{{ url_for('accountEditTeacher') }}" method="post">
+            <input type="hidden" value="None" name="teacher_id">
+            <input class="dropdown-item" type="submit" value="nessuno">
+          </form>
+          {% for teacher in teachers %}
+          <form action="{{ url_for('accountEditTeacher') }}" method="post">
+            <input type="hidden" value="{{ teacher.id }}" name="teacher_id">
+            <input class="dropdown-item" type="submit" value="{{ teacher.nickname or teacher.email }}">
+          </form>
+          {% endfor %}
+        </div>
+    </div>
+  </div>
+  <hr>
+</div>
+{% endblock %}

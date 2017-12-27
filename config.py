@@ -1,0 +1,2 @@
+test = True
+database = 'yamath'
