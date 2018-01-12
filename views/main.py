@@ -1,6 +1,6 @@
 from yamath.decorators import *
-from flask import Flask
-from flask import redirect
+#from flask import Flask
+#from flask import redirect
 from flask import render_template
 from flask import request
 from flask import url_for
@@ -15,8 +15,6 @@ from yamath import app
 
 @app.route("/")
 def home():
-    if current_user.is_authenticated:
-        return redirect(url_for("dashboard"))
     return render_template("welcome.html")
 
 @app.route("/dashboard")

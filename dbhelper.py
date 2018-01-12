@@ -3,6 +3,7 @@ from mongoengine import *
 
 class User(Document):
     meta = {'strict':False}
+    username = StringField(required=True, unique=True)
     email = StringField(required=True, unique=True)
     salt = StringField(required=True)
     hashed = StringField(required=True)
@@ -14,14 +15,9 @@ class User(Document):
     is_admin = BooleanField()
     classrooms = ListField(ReferenceField('Classroom'))
     teacher = ReferenceField('User')
-
-    is_authenticated = True
     
     def __str__(self):
-        return self.nickname or self.email
-
-    def get_id(self):
-        return self.email
+        return self.nickname or self.username
 
 
 class Classroom(Document):
