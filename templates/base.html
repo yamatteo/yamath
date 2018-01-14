@@ -136,27 +136,7 @@
     <nav class="navbar navbar-expand-md navbar-dark bg-dark" id="navbar">
         <a class="navbar-brand" href="{{ url_for('home') }}">Yamath</a>
         <div class="container">
-          {% if current_user.is_active %}
-          <div class="navbar-nav">
-            <a class="nav-link" href="{{ url_for('account') }}">Profilo</a>
-            {% if current_user.is_admin %}
-            <a class="nav-link" href="{{ url_for('admin') }}">Amministrazione:</a>
-            <a class="nav-link" href="{{ url_for('adminUsers') }}">Users</a>
-            <a class="nav-link" href="{{ url_for('adminNodes') }}">Nodes</a>
-            {% endif %}
-            {% if current_user.is_teacher %}
-            <a class="nav-link" href="{{ url_for('teacher') }}">Docente:</a>
-            {% endif %}
-          </div>
-          <a class="btn btn-outline-warning" href="{{ url_for('logout') }}">Logout</a>
-          {% else %}
           <div class="navbar-nav"></div>
-          <form class="form-inline d-none d-md-inline" method="post" action="{{ url_for('login') }}">
-              <input class="form-control" type="text" name="email" placeholder="email">
-              <input class="form-control" type="password" name="password" placeholder="password">
-              <button class="btn btn-outline-success" type="submit">Accedi</button>
-          </form>
-          {% endif %}
         </div>
     </nav>
   {% endblock %}

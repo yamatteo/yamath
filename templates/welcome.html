@@ -3,38 +3,8 @@
 {% block main %}
 <div class="jumbotron">
   <div class="container">
-    <h1 class="display-3">Benvenut@ eternauta</h1>
-    <p>Questa &egrave; una versione provvisoria della pagina. &Egrave; facile che capitino errori o comportamenti anomali. Se succedesse, per favore segnalalo al tuo insegnante di modo che, via via, si possa emendare.</p>
+    <h1 class="display-3">Ti stai sbagliando</h1>
+    <p>Questo sito non è pensato per l'accesso diretto con il browser. Visitare ... invece.</p>
   </div>
-</div>
-
-<div class="container">
-  <!-- Example row of columns -->
-  <div class="row">
-    <div class="col-md-4 d-md-none">
-      <h2>Accedi</h2>
-      <p>Se gi&agrave; sei utente di Yamath, inserisci i tuoi dati per effettuare l'accesso.</p>
-        <form method="post" action="{{ url_for('register') }}">
-            <input class="form-control" type="text" name="email" placeholder="email">
-            <input class="form-control" type="password" name="password" placeholder="password">
-            <button class="btn btn-outline-success" type="submit">Accedi</button>
-        </form>
-    </div>
-    <div class="col-md-4">
-      <h2>Registrati</h2>
-      <p>Se non sei ancora un utente di Yamath, inserisci i tuoi dati e inizia subito ad esplorare.</p>
-      <p>
-        <form method="post" action="{{ url_for('register') }}">
-            <input class="form-control" type="text" name="email" placeholder="email">
-            <input class="form-control" type="password" name="password1" placeholder="password">
-            <input class="form-control" type="password" name="password2" placeholder="password (conferma)">
-            <button class="btn btn-outline-success" type="submit">Registrati</button>
-        </form>
-      </p>
-    </div>
-  </div>
-
-  <hr>
-
 </div>
 {% endblock %}

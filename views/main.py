@@ -1,57 +1,62 @@
-from yamath.decorators import *
-#from flask import Flask
-#from flask import redirect
 from flask import render_template
 from flask import request
-from flask import url_for
-from flask_login import current_user
-from flask_login import LoginManager
-from flask_login import login_required
-from flask_login import login_user
-from flask_login import logout_user
-from yamath.dbhelper import User, DoesNotExist
-from yamath.passwordhelper import PH
+from flask_json import FlaskJSON, JsonError, json_response, as_json
 from yamath import app
+from yamath.dbhelper import User, DoesNotExist
+from yamath.decorators import *
+from yamath.passwordhelper import PH
 
-@app.route("/")
+@app.route("/", methods=["POST", "GET"])
 def home():
     return render_template("welcome.html")
 
-@app.route("/dashboard")
-@login_required
-def dashboard():
-    return render_template("dashboard.html")
-
-@app.route("/login", methods=["POST"])
+@app.route("/login", methods=["POST", "GET"])
 def login():
-    email = request.form.get("email")
-    password = request.form.get("password")
+    data = request.get_json(force=True)
+    #print(data)
+    username = data["username"]
+    password = data["password"]
     try:
-        stored_user = User.objects.get(email=email)
+        stored_user = User.objects.get(username=username)
         if PH.validate_password(password, stored_user.salt, stored_user.hashed):
-            login_user(stored_user, remember=True)
-            return redirect(url_for('dashboard'))
-        return redirect(url_for("home"))
+            return json_response(fasthash=PH.fasthash(username, app.secret_key))
+        raise JsonError(description='Incorrect password')
     except DoesNotExist:
-        return redirect(url_for("home"))
+        raise JsonError(description='Unknown username')
 
-@app.route("/logout")
-def logout():
-    logout_user()
-    return redirect(url_for("home"))
-
-@app.route("/register", methods=["POST"])
+@app.route("/register", methods=["POST", "GET"])
 def register():
-    email = request.form.get("email")
-    pw1 = request.form.get("password1")
-    pw2 = request.form.get("password2")
+    data = request.get_json(force=True)
+    username = data["username"]
+    pw1 = data["password1"]
+    pw2 = data["password2"]
+    email = data["email"]
     if not pw1 == pw2:
-        return redirect(url_for('home'))
-    try:
-        stored_user = User.objects.get(email=email)
-        return redirect(url_for('home'))
-    except DoesNotExist:
-        salt = PH.get_salt()
-        hashed = PH.get_hash(pw1, salt)
-        User(email=email, salt=salt, hashed=hashed, is_active=True).save()
-        return redirect(url_for('home'))
+        raise JsonError(description="Passwords don't match")
+    if User.objects(email=email).count():
+        raise JsonError(description="Email is already used")
+    if User.objects(username=username).count():
+        raise JsonError(description="Username is already used")
+    salt = PH.get_salt()
+    hashed = PH.get_hash(pw1, salt)
+    User(username=username, email=email, salt=salt, hashed=hashed, is_active=True).save()
+    return json_response(description="User created", fasthash=PH.fasthash(username, app.secret_key))
+
+
+@app.route("/danger/erase", methods=["POST", "GET"])
+def erase():
+    from yamath.dbhelper import User
+    from yamath.dbhelper import Node
+    User.objects.delete()
+    Node.objects.delete()
+    return json_response(description="Everything was deleted.")
+
+
+@app.route("/danger/isadmin", methods=["POST", "GET"])
+def isadmin():
+    from yamath.dbhelper import User
+    username = request.get_json(force=True)["username"]
+    u = User.objects.get(username=username)
+    u.is_admin = True
+    u.save()
+    return json_response(description="User %s is now admin" % username)

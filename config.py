@@ -1,2 +1,2 @@
 test = True
-database = 'yamath'
+database = 'unittest'

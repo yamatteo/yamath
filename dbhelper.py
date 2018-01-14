@@ -3,7 +3,7 @@ from mongoengine import *
 
 class User(Document):
     meta = {'strict':False}
-    username = StringField(required=True, unique=True)
+    username = StringField(required=False, unique=True, sparse=True)
     email = StringField(required=True, unique=True)
     salt = StringField(required=True)
     hashed = StringField(required=True)
@@ -34,7 +34,7 @@ class Classroom(Document):
 class Node(Document):
     meta = {"strict":False}
     name = StringField()
-    reference = StringField()
+    serial = StringField()
     antes = ListField(ReferenceField('Node'))
     posts = ListField(ReferenceField('Node'))
     

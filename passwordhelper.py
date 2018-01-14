@@ -3,6 +3,9 @@ import hashlib
 import os
 
 class PasswordHelper:
+    def fasthash(self, plain, salt):
+        return hashlib.sha1((salt+plain).encode('utf-8')).hexdigest()
+        
     def get_hash(self, plain, salt):
         if isinstance(plain, str):
             plain = bytes(plain, "utf-8")
