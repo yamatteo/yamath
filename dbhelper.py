@@ -1,6 +1,11 @@
 import yamath.config as config
 from mongoengine import *
 
+class UserNodeStatus(EmbeddedDocument):
+    serial = StringField()
+    history = StringField()
+    mean = FloatField()
+
 class User(Document):
     meta = {'strict':False}
     username = StringField(required=False, unique=True, sparse=True)
@@ -15,6 +20,7 @@ class User(Document):
     is_admin = BooleanField()
     classrooms = ListField(ReferenceField('Classroom'))
     teacher = ReferenceField('User')
+    nodes_stati = DictField()
     
     def __str__(self):
         return self.nickname or self.username
@@ -34,7 +40,7 @@ class Classroom(Document):
 class Node(Document):
     meta = {"strict":False}
     name = StringField()
-    serial = StringField()
+    serial = StringField(unique=True)
     antes = ListField(ReferenceField('Node'))
     posts = ListField(ReferenceField('Node'))
     
@@ -51,7 +57,7 @@ class Node(Document):
 class ExactOpenQuestion(Document):
     meta = {"strict":False}
     name = StringField()
-    reference = StringField()
+    serial = StringField(unique=True)
     node = ReferenceField("Node")
     question = StringField()
     answer = StringField()

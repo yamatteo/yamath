@@ -47,8 +47,10 @@ def register():
 def erase():
     from yamath.dbhelper import User
     from yamath.dbhelper import Node
+    from yamath.dbhelper import ExactOpenQuestion
     User.objects.delete()
     Node.objects.delete()
+    ExactOpenQuestion.objects.delete()
     return json_response(description="Everything was deleted.")
 
 

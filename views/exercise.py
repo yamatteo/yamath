@@ -1,80 +1,45 @@
 from yamath.decorators import *
-from flask import Flask
-from flask import redirect
-from flask import render_template
 from flask import request
-from flask import url_for
-from flask_login import current_user
-from flask_login import LoginManager
-from flask_login import login_required
-from flask_login import login_user
-from flask_login import logout_user
-from yamath.dbhelper import Classroom
-from yamath.dbhelper import DoesNotExist
-from yamath.dbhelper import ExactOpenQuestion
-from yamath.dbhelper import Node
-from yamath.dbhelper import User
-from yamath.passwordhelper import PasswordHelper
+from flask_json import FlaskJSON, JsonError, json_response, as_json
+from yamath.dbhelper import User, Node, ExactOpenQuestion, DoesNotExist
+from yamath.passwordhelper import PH
 from yamath import app
 
 
-@app.route("/exercise/detail/<primary_id>")
-@templated("exercise_detail.html")
-@teacher_required
-def exerciseDetail(primary_id):
-    exercise = ExactOpenQuestion.objects.get(id=primary_id)
-    return dict(exercise=exercise)
+@app.route("/question", methods=["POST", "GET"])
+@login_required
+def question():
+    import random
+    user = User.objects.get(username=request.get_json(force=True)["username"])
+    node = Node.objects.get(serial=request.get_json(force=True)["serial"])
+    q = random.choice( ExactOpenQuestion.objects.filter(node=node) )
+    return json_response(question_data={"name":q.name, "serial":q.serial, "question":q.question, "node":node.serial})
 
-@app.route("/classroom/edit/name/<primary_id>", methods=["POST"])
-@teacher_required
-def classroomEditName(primary_id):
-    classroom = Classroom.objects.get(id=primary_id)
-    classroom.name = request.form.get('name')
-    classroom.save()
-    redirect_view = request.form.get('redirect_view') or 'dashboard'
-    return redirect(url_for(redirect_view, primary_id=primary_id))
 
-@app.route("/classroom/add/node/<primary_id>", methods=["POST"])
-@teacher_required
-def classroomAddNode(primary_id):
-    classroom = Classroom.objects.get(id=primary_id)
-    node = Node.objects.get(id=request.form.get("secondary_id"))
-    classroom.nodes.append(node)
-    classroom.save()
-    redirect_view = request.form.get('redirect_view') or 'dashboard'
-    return redirect(url_for(redirect_view, primary_id=primary_id))
-
-@app.route("/classroom/add/student/<primary_id>", methods=["POST"])
-@teacher_required
-def classroomAddStudent(primary_id):
-    classroom = Classroom.objects.get(id=primary_id)
-    student = User.objects.get(id=request.form.get("secondary_id"))
-    classroom.students.append(student)
-    classroom.save()
-    student.classrooms.append(classroom)
-    student.save()
-    redirect_view = request.form.get('redirect_view') or 'dashboard'
-    return redirect(url_for(redirect_view, primary_id=primary_id))
-
-@app.route("/classroom/rem/node/<primary_id>", methods=["POST"])
-@teacher_required
-def classroomRemNode(primary_id):
-    classroom = Classroom.objects.get(id=primary_id)
-    node = Node.objects.get(id=request.form.get("secondary_id"))
-    classroom.nodes.remove(node)
-    classroom.save()
-    redirect_view = request.form.get('redirect_view') or 'dashboard'
-    return redirect(url_for(redirect_view, primary_id=primary_id))
-
-@app.route("/classroom/rem/student/<primary_id>", methods=["POST"])
-@teacher_required
-def classroomRemStudent(primary_id):
-    classroom = Classroom.objects.get(id=primary_id)
-    student = User.objects.get(id=request.form.get("secondary_id"))
-    classroom.students.remove(student)
-    classroom.save()
-    student.classrooms.remove(classroom)
-    student.save()
-    redirect_view = request.form.get('redirect_view') or 'dashboard'
-    return redirect(url_for(redirect_view, primary_id=primary_id))
+@app.route("/answer", methods=["POST", "GET"])
+@login_required
+def answer():
+    user = User.objects.get(username=request.get_json(force=True)["username"])
+    question = ExactOpenQuestion.objects.get(serial=request.get_json(force=True)["serial"])
+    answer = request.get_json(force=True)["answer"]
+    correct = 1 if (answer == question.answer) else 0
+    return json_response(correct=correct, solution=question.solution)
     
+
+@app.route("/question/new", methods=["POST", "GET"])
+@admin_required
+def question_new():
+    data = request.get_json(force=True)
+    name = data["name"]
+    serial = data["serial"]
+    question = data["question"]
+    answer = data["answer"]
+    solution = data["solution"]
+    node = data["node"]
+    try:
+        node = Node.objects.get(id=node)
+    except:
+        node = Node.objects.get(serial=node)
+    q = ExactOpenQuestion(name=name, serial=serial, question=question, answer=answer, solution=solution, node=node)
+    q.save()
+    return json_response(description="New question created.")

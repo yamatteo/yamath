@@ -6,7 +6,7 @@ json = FlaskJSON(app)
 app.secret_key = "oegheofdghvefodvn"
 
 import yamath.views.account
-#import yamath.views.classroom
+import yamath.views.exercise
 import yamath.views.main
 import yamath.views.nodes
 #import yamath.views.teacher

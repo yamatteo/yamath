@@ -4,14 +4,60 @@ import urllib
 import json
 from yamath import app
 
+server = 'http://127.0.0.1:5000'
+
+class SessionUser():
+    def __init__(self, username="anonymous", fasthash="0000"):
+        self.username = username
+        self.fasthash = fasthash
+    
+    def __call__(self, url, data_dict={}, **kwargs):
+        data = {"username":self.username, "fasthash":self.fasthash}
+        data.update(data_dict)
+        data.update(kwargs)
+        response = requests.post(server+url, json=data)
+        try:
+            return response.json()
+        except json.decoder.JSONDecodeError:
+            print(response.text)
+            return {"status":500}
+            
 def curl(url, data={}):
-    server = 'http://127.0.0.1:5000'
     response = requests.post(server+url, json=data)
     try:
         return response.json()
     except json.decoder.JSONDecodeError:
         print(response.text)
         return {"status":500}
+
+class TestEmptyDatabase(unittest.TestCase):
+    def setUp(self):
+        SessionUser()("/danger/erase")
+    
+    def test_registration(self):
+        au = SessionUser()
+        
+        response = au('/register', {"username":"user", "email":"user@example.com", "password1":"pass", "password2":"pass"})
+        self.assertEqual(response["status"], 200)
+        response = au('/register', {"username":"other_user", "email":"other_user@example.com", "password1":"pass", "password2":"pass"})
+        self.assertEqual(response["status"], 200)
+        response = au('/register', {"username":"user", "email":"other__user@example.com", "password1":"pass", "password2":"pass"})
+        self.assertEqual(response["status"], 400)
+        response = au('/register', {"username":"other__user", "email":"user@example.com", "password1":"pass", "password2":"pass"})
+        self.assertEqual(response["status"], 400)
+        
+    
+    def test_object_creation(self):
+        au = SessionUser()
+        au('/register', {"username":"admin", "email":"admin@example.com", "password1":"pass", "password2":"pass"})
+        au("/danger/isadmin", username="admin")
+        admin_fasthash = au("/login", username="admin", password="pass")["fasthash"]
+        ad = SessionUser("admin", admin_fasthash)
+        response = ad("/nodes/new", name="Test node 0", serial="000", antes="[]")
+        self.assertEqual(response["status"], 200)
+    
+    def tearDown(self):
+        SessionUser()("/danger/erase")
 
 class TestRegistration(unittest.TestCase):
     """
@@ -123,8 +169,9 @@ class TestAccount(unittest.TestCase):
     def tearDown(self):
         curl("/danger/erase", {})
 
-class TestNodes(unittest.TestCase):
-    def setUp(self):
+class TestPopulatedDatabase(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
         curl('/register', {"username":"admin", "email":"admin@example.com", "password1":"pass", "password2":"pass"})
         curl("/danger/isadmin", {"username":"admin"})
         admin_fasthash = curl("/login", {"username":"admin", "password":"pass"})["fasthash"]
@@ -134,16 +181,39 @@ class TestNodes(unittest.TestCase):
         curl("/nodes/new", {"username":"admin", "fasthash":admin_fasthash, "name":"node d", "serial":"013", "antes":"['011', '012',]"})
         curl("/nodes/new", {"username":"admin", "fasthash":admin_fasthash, "name":"node e", "serial":"014", "antes":"['012', '013', '010',]"})
         
+        curl("/question/new", {"username":"admin", "fasthash":admin_fasthash, "name":"Some question", "serial":"0110", "question":"Answer 5.", "answer":"5", "solution":"Solution in 5, just write 5.", "node":"011"})
+        curl("/question/new", {"username":"admin", "fasthash":admin_fasthash, "name":"Some question", "serial":"0111", "question":"Answer 4.", "answer":"4", "solution":"Solution in 4, just write 4.", "node":"011"})
+        curl("/question/new", {"username":"admin", "fasthash":admin_fasthash, "name":"Some question", "serial":"0120", "question":"Answer 5.", "answer":"5", "solution":"Solution in 5, just write 5.", "node":"012"})
+        curl("/question/new", {"username":"admin", "fasthash":admin_fasthash, "name":"Some question", "serial":"0130", "question":"Answer 5.", "answer":"5", "solution":"Solution in 5, just write 5.", "node":"013"})
+        curl("/question/new", {"username":"admin", "fasthash":admin_fasthash, "name":"Some question", "serial":"0140", "question":"Answer 5.", "answer":"5", "solution":"Solution in 5, just write 5.", "node":"014"})
+        print("Database is ready.")
+        
         curl('/register', {"username":"user", "email":"user@example.com", "password1":"pass", "password2":"pass"})
-        self.fasthash = curl("/login", {"username":"user", "password":"pass"})["fasthash"]
+        cls.fasthash = curl("/login", {"username":"user", "password":"pass"})["fasthash"]
+
+
+    @classmethod
+    def tearDownClass(cls):
+        curl("/danger/erase", {})
         
         
-    def test_whole_tree(self):
+    def test_nodes(self):
         response = curl("/nodes", {"username":"user", "fasthash":self.fasthash})
         self.assertEqual(response["status"], 200)
     
-    def tearDown(self):
-        curl("/danger/erase", {})
+    def test_question(self):
+        response = curl("/question", {"username":"user", "fasthash":self.fasthash, "serial":"011"})
+        self.assertEqual(response["status"], 200)
+    
+    def test_answer_right(self):
+        response = curl("/answer", {"username":"user", "fasthash":self.fasthash, "serial":"0111", "answer":"4"})
+        self.assertEqual(response["status"], 200)
+        self.assertEqual(response["correct"], 1)
+    
+    def test_answer_wrong(self):
+        response = curl("/answer", {"username":"user", "fasthash":self.fasthash, "serial":"0111", "answer":"5"})
+        self.assertEqual(response["status"], 200)
+        self.assertEqual(response["correct"], 0)
         
         
 
