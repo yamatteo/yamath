@@ -2,7 +2,7 @@ import requests
 import unittest
 import json
 
-server = 'http://127.0.0.1:5000'
+from yamath.config import server
 
 class SessionUser():
     def __init__(self, username="anonymous", fasthash="0000"):
