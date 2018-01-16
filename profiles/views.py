@@ -63,8 +63,23 @@ def profile_get(username):
             "email":p.email,
             "last_login":str(p.last_login),
             "global_mean":p.global_mean,
-            "recorded_answers":p.recorded_answers,
-            "nodes_stati":p.nodes_stati,
+            "recorded_answers":[
+                {
+                    "question_serial":ra.question_serial,
+                    "datetime":str(ra.datetime),
+                    "answer":ra.answer,
+                    "correct": 1 if ra.correct else 0,
+                }
+                for ra in p.recorded_answers
+            ],
+            "nodes_status":[
+                {
+                    "node_serial":ns.node_serial,
+                    "history":ns.history,
+                    "mean":ns.mean,
+                }
+                for ns in p.nodes_status
+            ],
         }
     }
 
@@ -116,7 +131,7 @@ def putpassword(username):
             "last_login":str(p.last_login),
             "global_mean":p.global_mean,
             "recorded_answers":p.recorded_answers,
-            "nodes_stati":p.nodes_stati,
+            "nodes_status":p.nodes_status,
         }
     }
 
@@ -160,7 +175,7 @@ def setpassword():
             "last_login":str(p.last_login),
             "global_mean":p.global_mean,
             "recorded_answers":p.recorded_answers,
-            "nodes_stati":p.nodes_stati,
+            "nodes_status":p.nodes_status,
         }
     }
 
@@ -171,6 +186,82 @@ def setpassword():
 def status_get():
     username = dataget("username", request.get_json(force=True))
     profile = Profile.objects.get(username=username)
-    pns = { s["node_serial"]:s for s in profile.nodes_status }
+    pns = {
+        s["node_serial"]:{
+            'node_serial':s.node_serial,
+            'history':s.history,
+            'mean':s.mean,
+        }
+        for s in profile.nodes_status
+    }
     return {"nodes_status":pns}
-    
+
+@app.route("/askme/<node_serial>", methods=["GET"])
+@login_required
+@as_json
+def askme(node_serial):
+    from random import choice
+    from yamath.dbhelper import SingleAnswer
+    from datetime import datetime
+    username = dataget("username", request.get_json(force=True))
+    profile = Profile.objects.get(username=username)
+    node = Node.objects.get(serial=node_serial)
+    question = choice(Question.objects.filter(node=node))
+    profile.recorded_answers.append(
+        SingleAnswer(
+            question_serial=question.serial,
+            datetime=datetime.now(),
+            answer=None,
+            correct=False,
+        )
+    )
+    profile.save()
+    return {
+        "question":{
+            "question_serial":question.serial,
+            "node_serial":node.serial,
+            "question_text":question.question,
+        }
+    }
+
+@app.route("/answer/<question_serial>", methods=["POST"])
+@login_required
+@as_json
+def answer(question_serial):
+    username = dataget("username", request.get_json(force=True))
+    answer = dataget("answer", request.get_json(force=True))
+    profile = Profile.objects.get(username=username)
+    question = Question.objects.get(serial=question_serial)
+    node = question.node
+    try:
+        ra = profile.recorded_answers.filter(question_serial=question_serial, answer=None)[0]
+        ns = profile.nodes_status.get(node_serial=node.serial)
+        ra.answer = answer
+        if answer == question.answer:
+            ra.correct = True
+            ns.history = ('A' + ns.history)[0:20]
+            ns.mean = sum( c == 'A' for c in ns.history[0:5] )/5
+            ns.save()
+            ra.save()
+            correct=1
+        else:
+            ra.correct == False
+            ns.history = ('R' + ns.history)[0:20]
+            ns.mean = sum( c == 'A' for c in ns.history[0:5] )/5
+            ns.save()
+            ra.save()
+            correct=0
+    except (DoesNotExist, IndexError):
+        raise JsonError(description="This question was not asked.", status=400)
+
+    return {
+        "answer":{
+            "question_serial":question.serial,
+            "node_serial":node.serial,
+            "question_text":question.question,
+            "user_answer":answer,
+            "question_answer":question.answer,
+            "question_solution":question.solution,
+            "correct":correct,
+        }
+    }

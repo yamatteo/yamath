@@ -23,10 +23,10 @@ class Profile(Document):
     global_mean = FloatField(min_value=0, max_value=1, precision=3, default=0)
     recorded_answers = EmbeddedDocumentListField("SingleAnswer")
     nodes_status = EmbeddedDocumentListField("NodeStatus")
-    
+
     def __str__(self):
         return self.username
-    
+
     @classmethod
     def complete_status(cls, username):
         print("entering")
@@ -37,7 +37,7 @@ class Profile(Document):
             except DoesNotExist:
                 profile.nodes_status.append(NodeStatus(node_serial=node.serial, history="", mean=0))
                 profile.save()
-        
+
 
 class Node(Document):
     meta = {"strict":False}
@@ -45,10 +45,10 @@ class Node(Document):
     serial = StringField(unique=True)
     antes = ListField(ReferenceField('Node'))
     posts = ListField(ReferenceField('Node'))
-    
+
     def __str__(self):
         return self.name
-    
+
     @classmethod
     def update_posts(cls, node):
         print("UPDATE POSTS", node, cls.objects(antes__contains=node))
@@ -63,6 +63,3 @@ class Question(Document):
     question = StringField()
     answer = StringField()
     solution = StringField()
-
-
-connect(host="mongodb://admin:ichigoichie@cluster0-shard-00-00-txgpn.mongodb.net:27017,cluster0-shard-00-01-txgpn.mongodb.net:27017,cluster0-shard-00-02-txgpn.mongodb.net:27017/%s?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin" % config.database)

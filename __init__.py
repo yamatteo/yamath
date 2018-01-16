@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import render_template
 from flask_json import FlaskJSON
+import yamath.config as config
 
 app = Flask(__name__)
 json = FlaskJSON(app)
