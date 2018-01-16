@@ -1,72 +1,96 @@
 from yamath.decorators import *
 from flask import request
-from flask_json import FlaskJSON, JsonError, json_response, as_json
-from yamath.dbhelper import User, Node, DoesNotExist
+from flask_json import json_response, as_json, JsonError
+from yamath.dbhelper import Node, DoesNotExist
 from yamath.passwordhelper import PH
 from yamath import app
 
 
-def status_or_empty(user, serial):
+# def status_or_empty(user, serial):
+#     try:
+#         return user.nodes_stati[serial]
+#     except KeyError:
+#         return {"serial":serial, "history":"", "mean":0}
+
+def dataget(k, d):
     try:
-        return user.nodes_stati[serial]
+        return d[k]
     except KeyError:
-        return {"serial":serial, "history":"", "mean":0}
+        raise JsonError(status=400, description="Missing '%s' key in request's data." % k)
 
 
-@app.route("/nodes", methods=["POST", "GET"])
-@login_required
-def nodes():
-    username = request.get_json(force=True)["username"]
-    user = User.objects.get(username=username)
-    nodes_tree = [ {
-        "name":n.name,
-        "serial":n.serial,
-        "antes":[ an.serial for an in n.antes ],
-        "status":status_or_empty(user, n.serial),
-    } for n in Node.objects() ]
-    return json_response(nodes_tree=nodes_tree)
-    
-
-@app.route("/nodes/completed", methods=["POST", "GET"])
-@login_required
-def nodes_completed():
-    username = request.get_json(force=True)["username"]
-    user = User.objects.get(username=username)
-    nodes_tree = [ {
-        "name":n.name,
-        "serial":n.serial,
-        "antes":[ an.serial for an in n.antes ],
-        "status":status_or_empty(user, n.serial),
-    } for n in Node.objects() ]
-    return json_response(nodes_tree=filter(lambda n: n["status"]["mean"] > 0.9, nodes_tree))
-    
-
-@app.route("/nodes/available", methods=["POST", "GET"])
-@login_required
-def nodes_accessible():
-    def completed(serial, nodes_tree):
-        return { n["serial"]:n["status"]["mean"] for n in nodes_tree }[serial] > 0.9
-    def available(node_data, nodes_tree):
-        return all( completed(s, nodes_tree) for s in node_data["antes"] )
-    username = request.get_json(force=True)["username"]
-    user = User.objects.get(username=username)
-    nodes_tree = [ {
-        "name":n.name,
-        "serial":n.serial,
-        "antes":[ an.serial for an in n.antes ],
-        "status":status_or_empty(user, n.serial),
-    } for n in Node.objects() ]
-    return json_response(nodes_tree=filter(lambda n: available(n, nodes_tree), nodes_tree))
-    
-
-@app.route("/nodes/new", methods=["POST", "GET"])
+@app.route("/nodes", methods=["GET"])
 @admin_required
-def nodes_new():
+@as_json
+def nodes_get():
+    nt = {
+        n.serial:{
+            "name":n.name,
+            "serial":n.serial,
+            "antes":[ an.serial for an in n.antes ],
+            # "status":status_or_empty(user, n.serial),
+        }
+    for n in Node.objects() }
+    return {"nodes_data_dict":nt}
+
+
+@app.route("/nodes", methods=["POST"])
+@admin_required
+@as_json
+def nodes_post():
     data = request.get_json(force=True)
-    print("New node", data)
-    name, serial, antes = data["name"], data["serial"], eval(data["antes"])
-    print("Reading", name, serial, antes)
-    antes = [ Node.objects.get(serial=s) for s in antes ]
+    name = dataget("name", data)
+    serial = dataget("serial", data)
+    try:
+        antes = [ Node.objects.get(serial=s) for s in eval(dataget("antes", data)) ]
+    except:
+        raise JsonError(status=400, description="List of antes was not wellformed.")
+    # print("New node", data)
     n = Node(name=name, serial=serial, antes=antes)
     n.save()
-    return json_response(description="New node created.")
+    return {"description":"New node created."}
+    
+    
+@app.route("/nodes/<serial>", methods=["GET"])
+@admin_required
+@as_json
+def node_get(serial):
+    n = Node.objects.get(serial=serial)
+    return {
+        "node_dict":{
+            "name":n.name,
+            "serial":n.serial,
+            "antes":[ n_.serial for n in n.antes ],
+        }
+    }
+    
+    
+@app.route("/nodes/<serial>", methods=["PATCH"])
+@admin_required
+@as_json
+def node_patch(serial):
+    n = Node.objects.get(serial=serial)
+    data = request.get_json(force=True)
+    n.name = dataget("name", data)
+    if (n.serial != dataget("serial", data)):
+        raise JsonError(status=400, description="Serials can't change.")
+    try:
+        n.antes = [ Node.objects.get(serial=s) for s in eval(dataget("antes", data)) ]
+    except:
+        raise JsonError(status=400, description="List of antes was not wellformed.")
+    n.save()
+    return {
+        "node_dict":{
+            "name":n.name,
+            "serial":n.serial,
+            "antes":[ n_.serial for n_ in n.antes ],
+        }
+    }
+    
+    
+@app.route("/nodes/<serial>", methods=["DELETE"])
+@admin_required
+@as_json
+def node_delete(serial):
+    Node.objects.get(serial=serial).delete()
+    return {"description":"Node deleted.",}

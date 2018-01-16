@@ -1,41 +1,43 @@
 import yamath.config as config
 from mongoengine import *
 
-class UserNodeStatus(EmbeddedDocument):
-    serial = StringField()
+class SingleAnswer(EmbeddedDocument):
+    question_serial = StringField()
+    datetime = DateTimeField()
+    answer = StringField()
+    correct = BooleanField()
+
+class NodeStatus(EmbeddedDocument):
+    node_serial = StringField()
     history = StringField()
     mean = FloatField()
 
-class User(Document):
+class Profile(Document):
     meta = {'strict':False}
     username = StringField(required=False, unique=True, sparse=True)
-    email = StringField(required=True, unique=True)
+    email = EmailField(required=True, unique=True)
     salt = StringField(required=True)
     hashed = StringField(required=True)
-    first_name = StringField(max_length=50)
-    last_name = StringField(max_length=50)
-    nickname = StringField(max_length=50)
-    is_active = BooleanField()
-    is_teacher = BooleanField()
-    is_admin = BooleanField()
-    classrooms = ListField(ReferenceField('Classroom'))
-    teacher = ReferenceField('User')
-    nodes_stati = DictField()
+    is_admin = BooleanField(default=False)
+    last_login = DateTimeField()
+    global_mean = FloatField(min_value=0, max_value=1, precision=3, default=0)
+    recorded_answers = EmbeddedDocumentListField("SingleAnswer")
+    nodes_status = EmbeddedDocumentListField("NodeStatus")
     
     def __str__(self):
-        return self.nickname or self.username
-
-
-class Classroom(Document):
-    meta = {"strict":False}
-    name = StringField(required=True, unique=True)
-    teacher = ReferenceField('User')
-    students = ListField(ReferenceField('User'))
-    nodes = ListField(ReferenceField('Node'))
+        return self.username
     
-    def __str__(self):
-        return self.name
-
+    @classmethod
+    def complete_status(cls, username):
+        print("entering")
+        profile = Profile.objects.get(username=username)
+        for node in Node.objects():
+            try:
+                status = profile.nodes_status.get(node_serial=node.serial)
+            except DoesNotExist:
+                profile.nodes_status.append(NodeStatus(node_serial=node.serial, history="", mean=0))
+                profile.save()
+        
 
 class Node(Document):
     meta = {"strict":False}
@@ -54,9 +56,8 @@ class Node(Document):
         node.save()
 
 
-class ExactOpenQuestion(Document):
+class Question(Document):
     meta = {"strict":False}
-    name = StringField()
     serial = StringField(unique=True)
     node = ReferenceField("Node")
     question = StringField()

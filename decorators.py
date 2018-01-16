@@ -34,20 +34,26 @@ def admin_required(f):
     @login_required
     def dec_f(*args, **kwargs):
         data = request.get_json(force=True)
+        # print("admin_request", data)
         try:
             username = data["username"]
             fasthash = data["fasthash"]
+            # print("break A")
             if PH.fasthash(username, app.secret_key) == fasthash:
-                from yamath.dbhelper import User
-                u = User.objects.get(username=username)
+                from yamath.dbhelper import Profile
+                u = Profile.objects.get(username=username)
+                # print("break B")
                 if u.is_admin:
                     pass
                 else:
-                    raise JsonError(description='Unauthorized request')
+                    # print("error 1")
+                    raise JsonError(description='Unauthorized request 1')
             else:
-                raise JsonError(description='Unauthorized request')
-        except:
-            raise JsonError(description='Unauthorized request')
+                # print("error 2")
+                raise JsonError(description='Unauthorized request 2')
+        except Exception as e:
+            # print("data error3", e)
+            raise JsonError(description='Unauthorized request 3')
         return f(*args, **kwargs)
 
     return dec_f
