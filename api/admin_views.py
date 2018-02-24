@@ -1,13 +1,13 @@
 from flask import request
 from flask_json import JsonError
-from yamath import app
-from yamath.decorators import adminRoute
+from __init__ import app
+from decorators import adminRoute
 
 @adminRoute("/api/admin")
 def admin(postdata):
     import pprint
-    print("adminRoute with postdata:")
-    pprint.pprint(postdata)
+    # print("adminRoute with postdata:")
+    # pprint.pprint(postdata)
     action = postdata.get("action", None)
     selref = postdata.get("selref", {}) or {}
     insref = postdata.get("insref", {}) or {}
@@ -20,9 +20,9 @@ def admin(postdata):
     except AttributeError as e:
         return dict(status=400, description="Argomento _class mancante. Eccezione:" + str(e))
     import importlib
-    model = getattr(importlib.import_module('yamath.models'), modelName)
+    model = getattr(importlib.import_module('models'), modelName)
     if action == "filter":
-        print("Running filter action")
+        # print("Running filter action")
         return {"result": [ instance.jref() for instance in model.filterJref(selref) ]}
     elif action == "get":
         try:

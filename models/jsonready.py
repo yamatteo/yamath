@@ -78,7 +78,7 @@ class JsonReady:
         try:
             jref = cls.normJref(unnormalizedJref)
         except ValueError as e:
-            print("jrefToMsa return \{\} because of unnormalized jref", e)
+            # print("jrefToMsa return \{\} because of unnormalized jref", e)
             return {}
         for (key, item) in jref.items():
             if key[0] == '_' or (key=="id" and allowId==False):
@@ -109,30 +109,30 @@ class JsonReady:
     @classmethod
     def filterJref(cls, jref={}):
         msa = cls.jrefToMsa(jref)
-        print("Mongoengine filter with", msa, "...")
+        # print("Mongoengine filter with", msa, "...")
         return cls.objects(**msa)
     @classmethod
     def getJref(cls, jref={}):
         msa = cls.jrefToMsa(jref)
-        print("Mongoengine get with", msa, "...")
+        # print("Mongoengine get with", msa, "...")
         return cls.objects.get(**msa)
     @classmethod
     def newJref(cls, jref={}):
         msa = cls.jrefToMsa(jref, allowId=False)
-        print("Mongoengine create with", msa, "...")
+        # print("Mongoengine create with", msa, "...")
         ins = cls(**msa).save()
         return ins
     @classmethod
     def patchJref(cls, instance, jref={}):
         msa = cls.jrefToMsa(jref, allowId=False)
-        print("Mongoengine patch", instance, "with", msa, "...")
+        # print("Mongoengine patch", instance, "with", msa, "...")
         for (key, item) in msa.items():
             setattr(instance, key, item)
         return instance
 
 
     def dumpJson(self, depth=1):
-        print("Dumping", self)
+        # print("Dumping", self)
         d = {"_model":self._class_name}
         if depth==0:
             d.update({"id":self.fieldToJson(("id", self._fields["id"]), depth=0)})
@@ -166,7 +166,7 @@ class JsonReady:
         }
     @classmethod
     def filterJson(cls, skwargs={}):
-        print("Running filterJson")
+        # print("Running filterJson")
         selectionArguments = {}
         for (key, item) in skwargs.items():
             if key in ("_model", ):
@@ -188,14 +188,14 @@ class JsonReady:
                     selectionArguments[key] = list(l)
                 else:
                     pass
-        print("Returning", cls.objects(**selectionArguments))
+        # print("Returning", cls.objects(**selectionArguments))
         return cls.objects(**selectionArguments)
     @classmethod
     def getJson(cls, skwargs={}):
-        print("Running getJson")
+        # print("Running getJson")
         selectionArguments = {}
         for (key, item) in skwargs.items():
-            print("converting", item)
+            # print("converting", item)
             if key in ("_model", ):
                 pass
             else:
@@ -218,7 +218,7 @@ class JsonReady:
         return cls.objects.get(**selectionArguments)
     @classmethod
     def newJson(cls, ikwargs={}):
-        print("Running newJson")
+        # print("Running newJson")
         instanceArguments = {}
         for (key, item) in ikwargs.items():
             # print("converting", item)
@@ -246,10 +246,10 @@ class JsonReady:
 
     @classmethod
     def patchJson(cls, instance, ikwargs={}):
-        print("Running patchJson")
+        # print("Running patchJson")
         instanceArguments = {}
         for (key, item) in ikwargs.items():
-            print("converting", item)
+            # print("converting", item)
             if key in ("_model", "id"):
                 pass
             else:
