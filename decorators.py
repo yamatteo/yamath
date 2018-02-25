@@ -2,7 +2,7 @@ from flask import request
 from flask_json import JsonError
 from flask_json import as_json
 from functools import wraps
-from yamath import app, fasthash_dictionary
+from __init__ import app, fasthash_dictionary
 
 class adminRoute(object):
     def __init__(self, url):
@@ -14,7 +14,7 @@ class adminRoute(object):
         @app.route(self.url, methods=["POST"], endpoint=f.__name__)
         @as_json
         def dec_f(*args, **kwargs):
-            from yamath.models import User
+            from models import User
             postdata = request.get_json(force=True)
             #print(data["username"], data["fasthash"])
             try:
@@ -42,7 +42,7 @@ class userRoute(object):
         @app.route(self.url, methods=["POST"], endpoint=f.__name__)
         @as_json
         def dec_f(*args, **kwargs):
-            from yamath.models import User
+            from models import User
             postdata = request.get_json(force=True)
             try:
                 username = postdata["username"]

@@ -1,13 +1,13 @@
 from flask import request
 from flask_json import FlaskJSON, JsonError
 from mongoengine import *
-from yamath import app, fasthash_dictionary
-from yamath.decorators import *
-from yamath.models import *
+from __init__ import app, fasthash_dictionary
+from decorators import *
+from models import *
 
 @userRoute('/api/profile')
 def profile(postdata):
-    print("profile with", postdata)
+    # print("profile with", postdata)
     username = postdata.get("username", None)
     user = User.objects.get(username=username)
     try:

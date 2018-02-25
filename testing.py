@@ -1,5 +1,5 @@
 from pprint import pprint
-from yamath import db_client
+from __init__ import db_client
 import json
 import requests
 import unittest
@@ -32,7 +32,7 @@ class SessionUser():
 
 class TestSignupAndLogin(unittest.TestCase):
     def setUp(self):
-        from yamath.models import User
+        from models import User
         try:
             User.objects.get(username="testuser").delete()
         except:
@@ -51,7 +51,7 @@ class TestSignupAndLogin(unittest.TestCase):
         self.assertIn("fasthash", response.keys())
 
     def tearDown(self):
-        from yamath.models import User
+        from models import User
         try:
             User.objects.get(username="testuser").delete()
         except:
@@ -63,7 +63,7 @@ class TestAdmin(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         super(TestAdmin, cls).setUpClass()
-        from yamath.models import User
+        from models import User
         au = SessionUser()
         au("/api/signup", username="testuser", password="pass", repassword="pass")
         au("/api/signup", username="testadmin", password="pass", repassword="pass")
@@ -73,19 +73,24 @@ class TestAdmin(unittest.TestCase):
         cls.ad = SessionUser("testadmin", "pass")
         cls.u = SessionUser("testuser", "pass")
     def testFilter(self):
-        from yamath.models import Question
+        from models import Question
+        try:
+            Question.objects.get(serial="TestQuestion").delete()
+        except Exception as e:
+            pass
         res1 = self.ad("/api/admin", action="filter",
-            skwargs={
+            selref={
                 "_type":"model",
                 "_class":"Question",
                 "serial":{"_type":"field", "_class":"StringField", "_value":"TestQuestion"}
             })
+        # print("res1", res1)
         try:
             Question(serial="TestQuestion").save()
         except:
             pass
         res2 = self.ad("/api/admin", action="filter",
-            skwargs={
+            selref={
                 "_type":"model",
                 "_class":"Question",
                 "serial":{"_type":"field", "_class":"StringField", "_value":"TestQuestion"}
@@ -93,47 +98,47 @@ class TestAdmin(unittest.TestCase):
         self.assertNotEqual(len(res1["result"]), len(res2["result"]))
         Question.objects.get(serial="TestQuestion").delete()
     def testGet(self):
-        from yamath.models import Question
+        from models import Question
         try:
             Question(serial="TestQuestion", question="Q?!?").save()
         except:
             pass
         res = self.ad("/api/admin",
             action="get",
-            skwargs={
+            selref={
                 "_type":"model",
                 "_class":"Question",
                 "serial":{"_type":"field", "_class":"StringField", "_value":"TestQuestion"}
             })
-        self.assertEqual(res["result"]["question"]["_value"], "Q???")
+        self.assertEqual(res["result"]["question"]["_value"], "Q?!?")
         Question.objects.get(serial="TestQuestion").delete()
     def testPut(self):
-        from yamath.models import Node
+        from models import Node
         res = self.ad("/api/admin",
             action="put",
-            ikwargs={
+            insref={
                 "_type":"model",
                 "_class":"Node",
                 "name":{"_type":"field", "_class":"StringField", "_value":"TestNode"},
                 "serial":{"_type":"field", "_class":"StringField", "_value":"Test0"},
             })
-        print(res)
+        # print(res)
         self.assertEqual(Node.objects.get(serial="Test0").name, "TestNode")
         Node.objects.get(serial="Test0").delete()
     def testPatch(self):
-        from yamath.models import Node
+        from models import Node
         try:
             Node(serial="TEST00").save()
         except:
             pass
         res = self.ad("/api/admin",
             action="patch",
-            skwargs={
+            selref={
                 "_type":"model",
                 "_class":"Node",
                 "serial":{"_type":"field", "_class":"StringField", "_value":"TEST00"}
             },
-            ikwargs={
+            insref={
                 "_type":"model",
                 "_class":"Node",
                 "name":{"_type":"field", "_class":"StringField", "_value":"TestNode"},
@@ -141,14 +146,14 @@ class TestAdmin(unittest.TestCase):
         self.assertEqual(res["result"]["name"]["_value"], "TestNode")
         Node.objects.get(serial="TEST00").delete()
     def testDelete(self):
-        from yamath.models import Node
+        from models import Node
         try:
             Node(serial="TEST00").save()
         except:
             pass
         res = self.ad("/api/admin",
             action="delete",
-            skwargs={
+            selref={
                 "_type":"model",
                 "_class":"Node",
                 "serial":{"_type":"field", "_class":"StringField", "_value":"TEST00"}
@@ -160,7 +165,7 @@ class TestAdmin(unittest.TestCase):
         except:
             pass
     def tearDownClass():
-        from yamath.models import User
+        from models import User
         for username in ("testuser", "tes Node.DoesNotExisttadmin"):
             try:
                 User.objects.get(username=username).delete()
@@ -173,14 +178,14 @@ class TestProfile(unittest.TestCase):
         response = ad("/api/profile", username=ad.username, fasthash=ad.fasthash)
         nodes = response["nodes"]
         profile = response["profile"]
-        pprint(profile)
-        pprint(nodes)
+        # pprint(profile)
+        # pprint(nodes)
 #
 # class TestNodeAndQuestion(unittest.TestCase):
 #     def setUpClass():
-#         from yamath.models import User
-#         from yamath.models import Node
-#         from yamath.models import Question
+#         from models import User
+#         from models import Node
+#         from models import Question
 #         for x in ["user", "test0", "test1", "test2", "test3", "test4", "test5"]:
 #             try:
 #                 User.objects.get(username=x).delete()

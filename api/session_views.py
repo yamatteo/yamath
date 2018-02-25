@@ -1,9 +1,9 @@
 from flask import request
 from flask_json import FlaskJSON, JsonError
 from mongoengine import *
-from yamath import app, fasthash_dictionary
-from yamath.decorators import *
-from yamath.models import *
+from __init__ import app, fasthash_dictionary
+from decorators import *
+from models import *
 
 @freeRoute('/api/signup')
 def signup(postdata):
@@ -35,7 +35,7 @@ def signup(postdata):
 
 @freeRoute("/api/login")
 def login(postdata):
-    print("Login request")
+    # print("Login request")
     username = postdata.get("username", "")
     password = postdata.get("password", "")
     try:
