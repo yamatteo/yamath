@@ -1,6 +1,46 @@
 from mongoengine import *
 
 class JsonReady:
+    def alt_jref(self, depth=1):
+        # Json-like reference dictionary
+        d = {
+            "_model": self._class_name,
+            "_str": self.__str__(),
+            "_id": str(self.id)
+        }
+        if depth>0:
+            d.update({ key:self.alt_fieldToJref(key, field, depth) for (key, field) in self._fields.items() if key!='id'})
+        return d
+    def alt_fieldToJref(self, name, field, depth):
+        # print("Jreffing field", name, "of", self, "(is a ObjectIdField? %s)" % isinstance(field, ObjectIdField))
+        if isinstance(field, StringField):
+            value = getattr(self, name)
+        elif isinstance(field, BooleanField):
+            value =  True if getattr(self, name) else None
+        elif isinstance(field, ReferenceField):
+            try:
+                value = getattr(self, name).alt_jref(depth-1)
+            except AttributeError:
+                value = None
+        elif isinstance(field, ListField) or isinstance(field, EmbeddedDocumentListField):
+            value = []
+            for item in getattr(self, name):
+                try:
+                    value.append(item.alt_jref(depth-1))
+                except AttributeError:
+                    value.append(item)
+        try:
+            # print("Value is", value)
+            # print("String should be", value["_str"])
+            string = value["_str"]
+        except:
+            string = str(value)
+        return {
+            "_field":str(type(field).__name__),
+            "_name":name,
+            "_value":value,
+            "_str": "%s: %s" % (name, string),
+        }
     def jref(self, depth=1):
         # Json-like reference dictionary
         d = {
@@ -109,7 +149,7 @@ class JsonReady:
     @classmethod
     def filterJref(cls, jref={}):
         msa = cls.jrefToMsa(jref)
-        # print("Mongoengine filter with", msa, "...")
+        print("Mongoengine filter with", msa, "...")
         return cls.objects(**msa)
     @classmethod
     def getJref(cls, jref={}):
