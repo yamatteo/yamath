@@ -7,4 +7,7 @@ class Node(Document, JsonReady):
     antes = ListField(ReferenceField('Node'))
 
     def __str__(self):
-        return "Node %s" % (self.name or self.serial or str(self.id))
+        return self.serial or str(self.id)
+
+    def __unicode__(self):
+        return self.serial or str(self.id)

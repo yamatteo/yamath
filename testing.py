@@ -4,6 +4,40 @@ import json
 import requests
 import unittest
 
+def TestingDb():
+    from models import User, Node, Question, Profile
+    # Users
+    User.objects.delete()
+    username = 'admin'
+    password = 'pass'
+    salt = User.getSalt()
+    hashed = User.getHash(password, salt)
+    User(username=username, salt=salt, hashed=hashed, isadmin=True).save()
+    username = 'user'
+    password = 'pass'
+    salt = User.getSalt()
+    hashed = User.getHash(password, salt)
+    User(username=username, salt=salt, hashed=hashed, isadmin=False).save()
+    # Nodes
+    Node.objects.delete()
+    n1 = Node(name='Test node 1', serial='T01').save()
+    n2 = Node(name='Test node 2', serial='T02').save()
+    n3 = Node(name='Test node 3', serial='T03', antes=[n2,]).save()
+    n4 = Node(name='Test node 4', serial='T04', antes=[n2,]).save()
+    n5 = Node(name='Test node 5', serial='T05', antes=[n3, n4]).save()
+    # Questions
+    Question.objects.delete()
+    for i in range(1, 6):
+        for j in range(1, 10):
+            Question(
+                serial='T0%d%d' % (i, j),
+                node=Node.objects.get(serial='T0%d'%i),
+                question='Question %d %d' % (i, j),
+                answer=str(j),
+                solution='Just %d' % j
+            ).save()
+
+
 class SessionUser():
     def __init__(self, username="", password="", server="http://127.0.0.1:5000"):
         self.username = ""
