@@ -6,3 +6,4 @@ config.py
 run.sh
 server.log
 venv/
+reactui/
