@@ -6,4 +6,5 @@ config.py
 run.sh
 server.log
 venv/
-reactui/
+reactui/build/
+reactui/node_modules/
