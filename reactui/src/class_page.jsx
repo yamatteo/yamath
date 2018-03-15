@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 // import { Link, Navbar } from './generic_components.jsx'
 
 export function classePrima(props) {
-  const _this = props._this
+  const app = props.app
   return (
     <div className="container">
       <div className="row">
@@ -43,7 +43,7 @@ export function classePrima(props) {
 }
 
 export function classeSeconda(props) {
-  const _this = props._this
+  const app = props.app
   return (
     <div className="container">
       <div className="row">
@@ -89,7 +89,7 @@ export function classeSeconda(props) {
 }
 
 export function classeTerza(props) {
-  const _this = props._this
+  const app = props.app
   return (
     <div className="container">
       <div className="row">
@@ -135,7 +135,7 @@ export function classeTerza(props) {
 }
 
 export function classeQuarta(props) {
-  const _this = props._this
+  const app = props.app
   return (
     <div className="container">
       <div className="row">
@@ -181,7 +181,7 @@ export function classeQuarta(props) {
 }
 
 export function classeQuinta(props) {
-  const _this = props._this
+  const app = props.app
   return (
     <div className="container">
       <div className="row">
