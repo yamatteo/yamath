@@ -9,12 +9,23 @@ class App extends Component {
     super(props)
     this.state = { pageName: 'welcome' }
     this.set = (obj => this.setState(obj)).bind(this)
+    this.handleKeyPress = this.handleKeyPress.bind(this)
   }
   componentDidMount() {
     window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub, 'root']);
+    document.addEventListener("keydown", this.handleKeyPress, false);
   }
   componentDidUpdate() {
     window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub, 'root']);
+  }
+  handleKeyPress(event) {
+    if(event.key == 'Insert'){
+      if (this.state.experimental) {
+        this.set({experimental: false})
+      } else {
+        this.set({experimental: true})
+      }
+    }
   }
   render() {
     const pageSelector = function(_this) {
@@ -89,9 +100,7 @@ class App extends Component {
         <Navbar
           className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top"
           brand={
-            <a className="navbar-brand" href="#">
-              Yamath
-            </a>
+            <Link className='navbar-brand' lambda={() => this.set({pageName:'welcome'})} text='Yamath'/>
           }
         />
         {pageSelector(this)}
