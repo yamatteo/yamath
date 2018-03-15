@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Link, Navbar } from './generic_components.jsx'
 import { PageSelector } from './pages/selector.jsx'
-import * as class_page from './class_page.jsx'
 import logo from './logo.svg'
 import './App.css'
 
@@ -34,7 +33,7 @@ class App extends Component {
         <Navbar
           className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top"
           brand={
-            <Link className='navbar-brand' lambda={() => this.set({pageName:'welcome'})} text='Yamath'/>
+            <Link className='navbar-brand' lambda={() => this.set({pageName:'welcome'})} text={ this.state.experimental ? 'Xper' :'Yamath'}/>
           }
         />
         <PageSelector app={this}/>
