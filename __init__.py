@@ -20,8 +20,8 @@ from flask_json import FlaskJSON, JsonError, json_response, as_json
 from flask_cors import CORS
 from mongoengine import connect
 
-# app = Flask(__name__, static_folder="../static/dist", template_folder="../static")
-app = Flask(__name__)
+app = Flask(__name__, static_folder="./build", template_folder="./build")
+# app = Flask(__name__)
 # Essendo solo un api, l'applicazione non ha più bisogno di static
 json = FlaskJSON(app)
 cors = CORS(app)
