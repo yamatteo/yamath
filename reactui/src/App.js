@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Link, Navbar } from './generic_components.jsx'
+import { PageSelector } from './pages/selector.jsx'
 import * as class_page from './class_page.jsx'
 import logo from './logo.svg'
 import './App.css'
@@ -28,73 +29,6 @@ class App extends Component {
     }
   }
   render() {
-    const pageSelector = function(_this) {
-      switch (_this.state.pageName) {
-        case 'welcome':
-          return (
-            <div className="container">
-              <div className="row">
-                <div className="col-lg-12 text-left">
-                  <h1 className="mt-5">Benvenuto</h1>
-                  <p>
-                    Da qui puoi accedere alle singole pagine di ogni classe dove troverai esercizi suddivisi per
-                    tipologia.
-                  </p>
-                  <ul className="list-unstyled">
-                    <li>
-                      <Link text="Classe prima" lambda={() => _this.set({ pageName: 'classe_prima' })} />
-                    </li>
-                    <li>
-                      <Link text="Classe seconda" lambda={() => _this.set({ pageName: 'classe_seconda' })} />
-                    </li>
-                    <li>
-                      <Link text="Classe terza" lambda={() => _this.set({ pageName: 'classe_terza' })} />
-                    </li>
-                    <li>
-                      <Link text="Classe quarta" lambda={() => _this.set({ pageName: 'classe_quarta' })} />
-                    </li>
-                    <li>
-                      <Link text="Classe quinta" lambda={() => _this.set({ pageName: 'classe_quinta' })} />
-                    </li>
-                  </ul>
-                  {/* <p class="lead">Complete with pre-defined file paths and responsive navigation!</p> */}
-                  {/* <ul class="list-unstyled">
-                    <li>Bootstrap 4.0.0</li>
-                    <li>jQuery 3.3.0</li>
-                  </ul> */}
-                </div>
-              </div>
-            </div>
-          )
-          break
-        case 'classe_prima':
-          return class_page.classePrima(_this)
-          break
-        case 'classe_seconda':
-          return class_page.classeSeconda(_this)
-          break
-        case 'classe_terza':
-          return class_page.classeTerza(_this)
-          break
-        case 'classe_quarta':
-          return class_page.classeQuarta(_this)
-          break
-        case 'classe_quinta':
-          return class_page.classeQuinta(_this)
-          break
-        default:
-          return (
-            <div class="container">
-              <div class="row">
-                <div class="col-lg-12">
-                  <h1 class="mt-5">Errore</h1>
-                  <p>Per qualche motivo inspiegabile c'è stato un errore...</p>
-                </div>
-              </div>
-            </div>
-          )
-      }
-    }
     return (
       <div className="App">
         <Navbar
@@ -103,7 +37,7 @@ class App extends Component {
             <Link className='navbar-brand' lambda={() => this.set({pageName:'welcome'})} text='Yamath'/>
           }
         />
-        {pageSelector(this)}
+        <PageSelector app={this}/>
       </div>
     )
   }
