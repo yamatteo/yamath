@@ -23,6 +23,9 @@ export function classePrima(props) {
             <li>{'$-\\frac32 + \\frac43, \\quad -\\frac{2}{3} + \\frac34$'}</li>
             <li>{'$\\frac56 - \\frac{{5}}{{12}}, \\quad 1 - \\frac32$'}</li>
             <li>{'$\\frac 1 5 - 1, \\quad 4 + \\frac32 - \\frac34$'}</li>
+            <li>{'$\\frac32 \\cdot \\frac43, \\quad 6 \\cdot \\frac52$$'}</li>
+            <li>{'$ -\\frac65 \\cdot \\left( - \\frac43 \\right) \\quad \\frac23 \\cdot \\frac29 $'}</li>
+            <li>{'$ \\frac55 \\cdot \\frac58 \\cdot \\left( - \\frac56 \\right), \\quad \\frac32 \\cdot \\left( - \\frac89 \\right) \\cdot \\frac56 $'}</li>
           </ol>
           {/* <p class="lead">Complete with pre-defined file paths and responsive navigation!</p> */}
           {/* <ul class="list-unstyled">
