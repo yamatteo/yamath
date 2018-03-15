@@ -36,6 +36,15 @@ class App extends Component {
                     <li>
                       <Link text="Classe seconda" lambda={() => _this.set({ pageName: 'classe_seconda' })} />
                     </li>
+                    <li>
+                      <Link text="Classe terza" lambda={() => _this.set({ pageName: 'classe_terza' })} />
+                    </li>
+                    <li>
+                      <Link text="Classe quarta" lambda={() => _this.set({ pageName: 'classe_quarta' })} />
+                    </li>
+                    <li>
+                      <Link text="Classe quinta" lambda={() => _this.set({ pageName: 'classe_quinta' })} />
+                    </li>
                   </ul>
                   {/* <p class="lead">Complete with pre-defined file paths and responsive navigation!</p> */}
                   {/* <ul class="list-unstyled">
@@ -52,6 +61,15 @@ class App extends Component {
           break
         case 'classe_seconda':
           return class_page.classeSeconda(_this)
+          break
+        case 'classe_terza':
+          return class_page.classeTerza(_this)
+          break
+        case 'classe_quarta':
+          return class_page.classeQuarta(_this)
+          break
+        case 'classe_quinta':
+          return class_page.classeQuinta(_this)
           break
         default:
           return (
