@@ -79,8 +79,8 @@ export function classeSeconda(props) {
             <li>{'$\\left( \\frac53 - \\frac72 \\right) \\cdot \\frac45 + \\left[ \\left( \\frac13 - \\frac{1}{15} \\right) \\cdot \\frac52 \\right]^2$'}</li>
             <li>{'$\\frac{63}{55} \\cdot \\frac{44}{45} + \\frac{14}{75} \\cdot \\frac{15}{35} + \\frac{2}{25}\\cdot 10 - \\frac{16}{25}:\\frac{3}{5}+\\frac{1}{15}$'}</li>
             <li>{'$\\left\{ \\left[ \\left( \\frac12 - \\frac23 \\right) : \\left(\\frac56 - \\frac{5}{12} \\right) \\cdot \\frac12 + \\frac34 \\right] : \\frac14 \\right\} - \\frac23 \\cdot \\left(- \\frac35 \\right)$'}</li>
-            <li>{'$ \\left( \\frac32 - 2 - \\frac14 \\right) - \\right( \\frac12 - \\frac54 \\right) $'}</li>
-            <li>{'$ \\left( \\frac13 - 3 \\right) - \\left[ \\left( -\\frac12 = 2 \\right) + \\left( \\frac92 - 1 \\right) \\right] $'}</li>
+            <li>{'$ \\left( \\frac32 - 2 - \\frac14 \\right) - \\left( \\frac12 - \\frac54 \\right) $'}</li>
+            <li>{'$ \\left( \\frac13 - 3 \\right) - \\left[ \\left( -\\frac12 + 2 \\right) + \\left( \\frac92 - 1 \\right) \\right] $'}</li>
           </ol>
         </div>
       </div>
