@@ -41,6 +41,28 @@ export function ClasseTerza(props) {
             <li>{'$ \\left( \\frac32 - 2 - \\frac14 \\right) - \\left( \\frac12 - \\frac54 \\right) $'}</li>
             <li>{'$ \\left( \\frac13 - 3 \\right) - \\left[ \\left( -\\frac12 + 2 \\right) + \\left( \\frac92 - 1 \\right) \\right] $'}</li>
           </ol>
+          <h3>Equazioni lineari</h3>
+          <p>Risolvi le seguenti equazioni.</p>
+          <ol type='a'>
+            <li>{'$3 - 2x = 8 + 2x$'}</li>
+            <li>{'$\\frac23 x - 3 = \\frac13 x + 1$'}</li>
+            <li>{'$\\frac65 x = \\frac{24}{5} - x$'}</li>
+            <li>{'$3x - 2x + 1 = 2 + 3x - 1$'}</li>
+            <li>{'$\\frac25 x - \\frac32 = \\frac32 x + \\frac{1}{10}$'}</li>
+            <li>{'$\\frac56 x + \\frac32 = \\frac{25}{3} - \\frac{10}{2}x$'}</li>
+
+          </ol>
+          <h3>Disequazioni lineari</h3>
+          <p>Risolvi le seguenti disequazioni ricordando che se moltiplico o divido per una quantità negativa, la direzione della disuguaglianza si inverte.</p>
+          <ol type='a'>
+            <li>{'$x - 3x - 9 < x - 2x + 2$'}</li>
+            <li>{'$2 + 4x > 1 - 2x$'}</li>
+            <li>{'$1 + x^2 \\leq -5 + x^2 - 2x + 1 + x + 1$'}</li>
+            <li>{'$x^2 - 6x + 9 + 1 + 4x + 3x - 3 \\geq x^2 + 4x + 4$'}</li>
+            <li>{'$-\\frac23 + x < \\frac14 x - \\frac14 + \\frac16 x - \\frac13$'}</li>
+            <li>{'$\\frac15 x - \\frac15 - \\frac25 x + \\frac{1}{10} > \\frac12 - \\frac12 x$'}</li>
+
+          </ol>
         </div>
       </div>
     </div>

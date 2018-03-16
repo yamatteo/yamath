@@ -16,21 +16,6 @@ export function ClasseQuarta(props) {
             <li>{'$[2 \\cdot (-3)^2 + 2 \\cdot (-3) \\cdot (-2)]^2 : [2^4 - 3 \\cdot (+6)]^2$'}</li>
             <li>{'$[3 \\cdot (-1)^2 - 3 \\cdot (-3) \\cdot (-3)]^3 : [2^2 + 5 \\cdot (-2)^2]^3$'}</li>
           </ol>
-          <h3>Operazioni singole con le frazioni</h3>
-          <p>Esegui i calcoli proposti e semplifica il risultato.</p>
-          <ol type='a'>
-            <li>{'$ \\frac 12 + \\frac 32, \\quad \\quad \\frac{7}{11} + \\frac{4}{11}$'}</li>
-            <li>{'$-\\frac32 + \\frac43, \\quad \\quad -\\frac{2}{3} + \\frac34$'}</li>
-            <li>{'$\\frac56 - \\frac{{5}}{{12}}, \\quad \\quad 1 - \\frac32$'}</li>
-            <li>{'$\\frac 1 5 - 1, \\quad \\quad 4 + \\frac32 - \\frac34$'}</li>
-            <li>{'$\\frac32 \\cdot \\frac43, \\quad \\quad 6 \\cdot \\frac52$'}</li>
-            <li>{'$ -\\frac65 \\cdot \\left( - \\frac43 \\right) \\quad \\quad \\frac23 \\cdot \\frac29 $'}</li>
-            <li>{'$ \\frac55 \\cdot \\frac58 \\cdot \\left( - \\frac56 \\right), \\quad \\quad \\frac32 \\cdot \\left( - \\frac89 \\right) \\cdot \\frac56 $'}</li>
-            <li>{'$ \\frac32 : \\frac43, \\quad \\quad - \\frac65 : \\left( - \\frac23 \\right) $'}</li>
-            <li>{'$ \\frac{+3}{2} : \\frac{-3}{2}, \\quad \\quad \\frac25 : \\frac58 : \\left( - \\frac56 \\right) $'}</li>
-            <li>{'$ \\left( - \\frac23 \\right)^2, \\quad \\quad \\left( \\frac12 - 1 \\right)^3 $'}</li>
-            <li>{'$ \\left( - \\frac12 \\right)^3, \\quad \\quad \\left(-\\frac35 \\right)^0 $'}</li>
-          </ol>
           <h3>Espressioni con le frazioni</h3>
           <p>Ricordando le regole della precedenza e come si svolgono i calcoli tra frazioni, semplifica le seguenti espressioni.</p>
           <ol type='a'>
@@ -40,6 +25,28 @@ export function ClasseQuarta(props) {
             <li>{'$\\left\\{ \\left[ \\left( \\frac12 - \\frac23 \\right) : \\left(\\frac56 - \\frac{5}{12} \\right) \\cdot \\frac12 + \\frac34 \\right] : \\frac14 \\right\\} - \\frac23 \\cdot \\left(- \\frac35 \\right)$'}</li>
             <li>{'$ \\left( \\frac32 - 2 - \\frac14 \\right) - \\left( \\frac12 - \\frac54 \\right) $'}</li>
             <li>{'$ \\left( \\frac13 - 3 \\right) - \\left[ \\left( -\\frac12 + 2 \\right) + \\left( \\frac92 - 1 \\right) \\right] $'}</li>
+          </ol>
+          <h3>Equazioni lineari</h3>
+          <p>Risolvi le seguenti equazioni.</p>
+          <ol type='a'>
+            <li>{'$3 - 2x = 8 + 2x$'}</li>
+            <li>{'$\\frac23 x - 3 = \\frac13 x + 1$'}</li>
+            <li>{'$\\frac65 x = \\frac{24}{5} - x$'}</li>
+            <li>{'$3x - 2x + 1 = 2 + 3x - 1$'}</li>
+            <li>{'$\\frac25 x - \\frac32 = \\frac32 x + \\frac{1}{10}$'}</li>
+            <li>{'$\\frac56 x + \\frac32 = \\frac{25}{3} - \\frac{10}{2}x$'}</li>
+
+          </ol>
+          <h3>Disequazioni lineari</h3>
+          <p>Risolvi le seguenti disequazioni ricordando che se moltiplico o divido per una quantità negativa, la direzione della disuguaglianza si inverte.</p>
+          <ol type='a'>
+            <li>{'$x - 3x - 9 < x - 2x + 2$'}</li>
+            <li>{'$2 + 4x > 1 - 2x$'}</li>
+            <li>{'$1 + x^2 \\leq -5 + x^2 - 2x + 1 + x + 1$'}</li>
+            <li>{'$x^2 - 6x + 9 + 1 + 4x + 3x - 3 \\geq x^2 + 4x + 4$'}</li>
+            <li>{'$-\\frac23 + x < \\frac14 x - \\frac14 + \\frac16 x - \\frac13$'}</li>
+            <li>{'$\\frac15 x - \\frac15 - \\frac25 x + \\frac{1}{10} > \\frac12 - \\frac12 x$'}</li>
+
           </ol>
         </div>
       </div>
