@@ -41,6 +41,14 @@ export function ClasseSeconda(props) {
             <li>{'$ \\left( \\frac32 - 2 - \\frac14 \\right) - \\left( \\frac12 - \\frac54 \\right) $'}</li>
             <li>{'$ \\left( \\frac13 - 3 \\right) - \\left[ \\left( -\\frac12 + 2 \\right) + \\left( \\frac92 - 1 \\right) \\right] $'}</li>
           </ol>
+          <h3>Espressioni letterali</h3>
+          <p>Calcola il valore delle seguenti espressioni letterali sostituendo l'opportuno valore alle lettere.</p>
+          <ol type='a'>
+            <li>{'$5a^2b \\qquad$ per $a = -\\frac12$ e $b = \\frac35$'}</li>
+            <li>{'$\\frac32 a^2 + \\frac12 a - 1 \\qquad$ per $a = 0$, per $a = -1$ e per $a = 2$'}</li>
+            <li>{'$2x^5 - 8x^4 + 3x^3 + 2x^2 - 7x + 8 \\qquad$ per $x = 1$ e per $x = -1$'}</li>
+            <li>{'$2a - b - 3ab \\qquad$ per $a = \\frac12$ e $b = -\\frac13$'}</li>
+          </ol>
         </div>
       </div>
     </div>
