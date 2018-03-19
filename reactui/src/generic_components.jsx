@@ -104,6 +104,7 @@ export function Input(props) {
   const placeholder = props.placeholder || props.name
   const actionGenerator = props.actionGenerator
   const dispatch = props.dispatch
+  const lambda = props.lambda
   const lambdaGenerator = props.lambdaGenerator
   const onChange = (function() {
     if (actionGenerator && dispatch && !lambdaGenerator) {
@@ -112,6 +113,8 @@ export function Input(props) {
       return event => {
         lambdaGenerator(event, name)()
       }
+    } else if (lambda && !actionGenerator && !lambdaGenerator) {
+      return lambda
     } else {
       return event => {
         alert('Value changed with no action')

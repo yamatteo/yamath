@@ -13,7 +13,7 @@ export function PageSelector(props) {
   const pageName = props.pageName || (props.app && props.app.state && props.app.state.pageName)
   const dict = {
     welcome: <WelcomePage set={set}/>,
-    login: <LoginPage set={set}/>,
+    login: <LoginPage app={app}/>,
     classe_prima: <ClassePrima app={app}/>,
     classe_seconda: <ClasseSeconda app={app}/>,
     classe_terza: <ClasseTerza app={app}/>,
