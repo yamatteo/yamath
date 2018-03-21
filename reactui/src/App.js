@@ -37,7 +37,7 @@ class App extends Component {
           }
         >
           { this.state.experimental && (
-            <Link className='nav-link' lambda={() => this.set({pageName: 'login'})} text='login'/>
+            <Link className='nav-link' lambda={() => this.set({pageName: 'question', questionId:'5ab13d73ce616410a749cd06'})} text='question'/>
           )}
         </Navbar>
         <PageSelector app={this}/>

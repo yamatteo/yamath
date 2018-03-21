@@ -2,56 +2,49 @@ from flask import request
 from flask_json import JsonError
 from __init__ import app
 from decorators import adminRoute
+import json
 
 @adminRoute('/api/crud')
 def crud(postdata):
-    print("Crud", postdata)
+    # print("Crud", postdata)
     try:
         method = postdata['method'].lower()
         assert method in ['create', 'read', 'update', 'delete']
     except:
         return dict(status=400, description='Missing or wrong "method" argument.')
     try:
+        modelName = postdata['model'].capitalize()
+        assert modelName in ['User', 'Node', 'Question']
+    except:
+        return dict(status=400, description='Missing or wrong "model" argument.')
+    try:
         selref = postdata['selref']
-        assert selref['_type'] == 'model'
     except:
         selref = {}
     try:
         insref = postdata['insref']
-        assert insref['_type'] == 'model'
     except:
         insref = {}
-    try:
-        if (selref):
-            modelName = selref['_class'].capitalize()
-        elif (insref):
-            modelName = insref['_class'].capitalize()
-        else:
-            raise KeyError
-    except:
-        return dict(status=400, description='Can\'t deduce "modelName".')
     try:
         import importlib
         model = getattr(importlib.import_module('models'), modelName)
     except:
         return dict(status=400, description='Can\'t load "%s" model.' % modelName)
-    print(method, model, selref)
+    # print(method, model, selref)
     if method == 'create':
         pass
     if method == 'read':
-        print('Reading')
-        result = [ instance.jref() for instance in model.filterJref(selref) ]
+        # print('Reading')
+        result = [ json.loads(instance.to_json()) for instance in model.objects.filter(**selref)]
         if len(result) == 0:
-            return {"emptyList":True}
-        if len(result) == 1:
-            return {"instance":result[0]}
-        if len(result) > 1:
-            return {'isArray':True, "array":result}
+            return {"emptyList":True, 'array':[]}
+        if len(result) > 0:
+            return {'singleResult':(len(result)==1), "array":result}
     if method == 'update':
         pass
     if method == 'delete':
         pass
-    return dict(status=500, description='Intentional error', selref=selref, insref=insref)
+    return dict(status=500, description='Intentional error', selref=selref, insref=insref, method=method)
 
 @adminRoute("/api/admin")
 def admin(postdata):
