@@ -17,8 +17,10 @@ export function ClassNodeSection(props) {
     return (
       <p>
       <span className='h4'>{ node_name }:</span> un esercizio <Link text='a caso' lambda={() => {
-          path_set('pageName', 'question')
-          path_set('question_page_state', {loaded_question:false, questionId: node_questions[Math.floor(Math.random() * node_questions.length)]['_id']['$oid']})
+          alert('here')
+          path_set('pageName', 'question',
+            path_set('question_page_state', {loaded_question:false, questionId: node_questions[Math.floor(Math.random() * node_questions.length)]['_id']['$oid']})
+          )
         }}/>, oppure tutta la <Link text='lista' lambda={() => {
           path_set('class_node_state/'+node_serial+'/show_list', true)
         }}/>
@@ -26,7 +28,10 @@ export function ClassNodeSection(props) {
           (show_list) && (
             <ul>
                 {node_questions.map(question => (
-                  <li key={question.serial}><Link text={question.serial} lambda={() => path_set('question_page_state', {loaded_question:false, questionId: question['_id']['$oid']})}/></li>
+                  <li key={question.serial}><Link text={question.serial} lambda={() => {
+                    const partState = path_set('question_page_state', {loaded_question:false, questionId: question['_id']['$oid']})
+                    path_set('pageName', 'question', partState)
+                  }}/></li>
                 ))}
             </ul>
           )

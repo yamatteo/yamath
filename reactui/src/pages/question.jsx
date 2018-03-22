@@ -5,9 +5,10 @@ import { api } from '../fetch.jsx'
 export function QuestionPage(props) {
   const set = props.set || (props.app && props.app.set)
   const app = props.app
+  const path_set = app.path_set
   const question = (() => {
     try {
-      return props.app.state.loaded_question
+      return props.app.state.question_page_state.loaded_question
     } catch (e) {
       return undefined
     }
@@ -23,10 +24,10 @@ export function QuestionPage(props) {
         </div>
         <div className='row'>
           <div className='col-md-3'>
-            <Button text='Mostra soluzione' className='btn btn-outline-warning' lambda={() => set({showSolution: true})}/>
+            <Button text='Mostra soluzione' className='btn btn-outline-warning' lambda={() => path_set('question_page_state/showSolution', true)}/>
           </div>
           <div className='col-md-9'>
-            { (app.state.showSolution) && (
+            { (app.state.question_page_state.showSolution) && (
               <p>{ question.solution }</p>
             )}
           </div>
@@ -34,7 +35,12 @@ export function QuestionPage(props) {
       </div>
     )
   } else {
-    api('/api/question', {id:app.state.questionId}).then(res => app.set({'loaded_question': res.question, showSolution:false}))
+    const question_id = app.state.question_page_state.questionId
+    api('/api/question', {id:question_id}).then(res => {
+        path_set('question_page_state/loaded_question', res.question)
+        path_set('question_page_state/showSolution', false)
+      }
+    )
     return (
       <div className="container">
         <div className="row">

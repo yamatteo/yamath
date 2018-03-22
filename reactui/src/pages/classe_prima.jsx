@@ -12,7 +12,7 @@ export function ClassePrima(props) {
         <div className="col-lg-12 text-left">
           <h1 className="mt-5">Classe prima</h1>
           <ClassNodeSection app={app} node_serial='010'/>
-          <h3>Quattro operazioni con i naturali</h3>
+          {/* <h3>Quattro operazioni con i naturali</h3>
             {
               (() => {
                 if (app.state.questions010) {
@@ -30,7 +30,7 @@ export function ClassePrima(props) {
                   api('/api/node_questions', {node_serial: '010'}).then(res => set({questions010: res.questions}))
                 }
               })()
-            }
+            } */}
           <h3>Cinque operazioni e precedenza</h3>
           <p>Ricordando le regole della precedenza, calcola il valore delle seguenti espressioni.</p>
           <ol type='a'>

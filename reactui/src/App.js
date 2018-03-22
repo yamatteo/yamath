@@ -10,7 +10,7 @@ class App extends Component {
     super(props)
     this.state = { pageName: 'welcome' }
     this.set = (obj => this.setState(obj)).bind(this)
-    this.path_set = (function set(path, value) {
+    this.path_set = (function set(path, value, prevState) {
       console.log('path_set', path, value);
       const array = path.split('/')
       const nextStateByArray = function(prevState, array, value) {
@@ -23,9 +23,13 @@ class App extends Component {
           const subState = prevState[array[0]] || {}
           nextState[array[0]] = nextStateByArray(subState, array.slice(1), value)
         }
+        console.log('returning', nextState);
         return nextState
       }
-      this.setState(nextStateByArray(this.state, array, value))
+      const state = prevState || this.state
+      const nextState = nextStateByArray(state, array, value)
+      this.setState(nextState)
+      return nextState
     }).bind(this)
     this.handleKeyPress = this.handleKeyPress.bind(this)
   }
