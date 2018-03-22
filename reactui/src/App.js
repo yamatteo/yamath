@@ -11,11 +11,11 @@ class App extends Component {
     this.state = { pageName: 'welcome' }
     this.set = (obj => this.setState(obj)).bind(this)
     this.path_set = (function set(path, value, prevState) {
-      console.log('path_set', path, value);
+      // console.log('path_set', path, value);
       const array = path.split('/')
       const nextStateByArray = function(prevState, array, value) {
-        console.log('prevState', prevState)
-        console.log('array', array);
+        // console.log('prevState', prevState)
+        // console.log('array', array);
         let nextState = JSON.parse(JSON.stringify(prevState))
         if (array.length==1) {
           nextState[array[0]] = value
@@ -23,7 +23,7 @@ class App extends Component {
           const subState = prevState[array[0]] || {}
           nextState[array[0]] = nextStateByArray(subState, array.slice(1), value)
         }
-        console.log('returning', nextState);
+        // console.log('returning', nextState);
         return nextState
       }
       const state = prevState || this.state

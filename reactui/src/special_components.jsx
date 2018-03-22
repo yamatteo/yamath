@@ -9,7 +9,7 @@ export function ClassNodeSection(props) {
   const node_serial = props.node_serial
   const class_node_state = (state.class_node_state && state.class_node_state[node_serial]) || {serial:node_serial, loaded:false}
   const node_loaded = class_node_state.loaded
-  console.log('classnodestate', class_node_state)
+  // console.log('classnodestate', class_node_state)
   if (node_loaded) {
     const node_name = class_node_state.name
     const node_questions = class_node_state.questions
@@ -17,7 +17,6 @@ export function ClassNodeSection(props) {
     return (
       <p>
       <span className='h4'>{ node_name }:</span> un esercizio <Link text='a caso' lambda={() => {
-          alert('here')
           path_set('pageName', 'question',
             path_set('question_page_state', {loaded_question:false, questionId: node_questions[Math.floor(Math.random() * node_questions.length)]['_id']['$oid']})
           )
@@ -40,7 +39,7 @@ export function ClassNodeSection(props) {
     )
   } else {
     api('/api/node_questions', {node_serial: node_serial}).then(res => {
-      console.log('res', res);
+      // console.log('res', res);
       path_set('class_node_state/'+node_serial+'/loaded', true)
       path_set('class_node_state/'+node_serial+'/name', res.name)
       path_set('class_node_state/'+node_serial+'/questions', res.questions)})
