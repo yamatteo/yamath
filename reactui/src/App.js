@@ -23,7 +23,7 @@ class App extends Component {
           const subState = prevState[array[0]] || {}
           nextState[array[0]] = nextStateByArray(subState, array.slice(1), value)
         }
-        // console.log('returning', nextState);
+        // console.log('retrning', nextState);
         return nextState
       }
       const state = prevState || this.state

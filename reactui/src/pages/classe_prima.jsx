@@ -12,25 +12,8 @@ export function ClassePrima(props) {
         <div className="col-lg-12 text-left">
           <h1 className="mt-5">Classe prima</h1>
           <ClassNodeSection app={app} node_serial='010'/>
-          {/* <h3>Quattro operazioni con i naturali</h3>
-            {
-              (() => {
-                if (app.state.questions010) {
-                  return (
-                    <div>
-                      <p>Prova a risolvere un esercizio <Link text='a caso' lambda={() => set({pageName:'question', loaded_question: false, questionId: app.state.questions010[Math.floor(Math.random() * app.state.questions010.length)]['_id']['$oid']})}/>. Oppure scegline uno dalla seguente lista.</p>
-                      <p>
-                        {app.state.questions010.map(question => (
-                          <span key={question.serial}><Link text={question.serial} lambda={() => set({pageName:'question', loaded_question: false, questionId:question['_id']['$oid']})}/>, </span>
-                        ))}
-                      </p>
-                    </div>
-                  )
-                } else {
-                  api('/api/node_questions', {node_serial: '010'}).then(res => set({questions010: res.questions}))
-                }
-              })()
-            } */}
+          <ClassNodeSection app={app} node_serial='011'/>
+          <ClassNodeSection app={app} node_serial='012'/>
           <h3>Cinque operazioni e precedenza</h3>
           <p>Ricordando le regole della precedenza, calcola il valore delle seguenti espressioni.</p>
           <ol type='a'>
