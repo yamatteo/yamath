@@ -4,11 +4,29 @@ import { PageSelector } from './pages/selector.jsx'
 import logo from './logo.svg'
 import './App.css'
 
+
 class App extends Component {
   constructor(props) {
     super(props)
     this.state = { pageName: 'welcome' }
     this.set = (obj => this.setState(obj)).bind(this)
+    this.path_set = (function set(path, value) {
+      console.log('path_set', path, value);
+      const array = path.split('/')
+      const nextStateByArray = function(prevState, array, value) {
+        console.log('prevState', prevState)
+        console.log('array', array);
+        let nextState = JSON.parse(JSON.stringify(prevState))
+        if (array.length==1) {
+          nextState[array[0]] = value
+        } else {
+          const subState = prevState[array[0]] || {}
+          nextState[array[0]] = nextStateByArray(subState, array.slice(1), value)
+        }
+        return nextState
+      }
+      this.setState(nextStateByArray(this.state, array, value))
+    }).bind(this)
     this.handleKeyPress = this.handleKeyPress.bind(this)
   }
   componentDidMount() {

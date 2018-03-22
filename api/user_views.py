@@ -41,4 +41,4 @@ def node_questions(postdata):
     else:
         return {'status':400, 'description':'Can\'t find the node. No serial or id provided.'}
     questions = Question.objects.filter(node=node.id)
-    return {'status':200, 'questions':json.loads(questions.to_json())}
+    return {'status':200, 'name':node.name, 'questions':json.loads(questions.to_json())}

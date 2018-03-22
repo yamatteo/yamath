@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Link, Navbar } from '../generic_components.jsx'
+import { ClassNodeSection } from '../special_components.jsx'
 import { api } from '../fetch.jsx'
 
 export function ClassePrima(props) {
@@ -10,6 +11,7 @@ export function ClassePrima(props) {
       <div className="row">
         <div className="col-lg-12 text-left">
           <h1 className="mt-5">Classe prima</h1>
+          <ClassNodeSection app={app} node_serial='010'/>
           <h3>Quattro operazioni con i naturali</h3>
             {
               (() => {

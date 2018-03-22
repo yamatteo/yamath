@@ -38,10 +38,10 @@ export async function mockFetch(url, autodata, delay=500) {
 
 export function api(url, data, autodata={}) {
   return Promise.properRace([
-    fetch("http://192.168.1.3:5000"+url, { method: "POST", body: JSON.stringify(data) }),
-    fetch("http://127.0.0.1:5000"+url, { method: "POST", body: JSON.stringify(data) }),
+    // fetch("http://192.168.1.3:5000"+url, { method: "POST", body: JSON.stringify(data) }),
+    // fetch("http://127.0.0.1:5000"+url, { method: "POST", body: JSON.stringify(data) }),
     fetch("http://yamatteo.pythonanywhere.com"+url, { method: "POST", body: JSON.stringify(data) }),
-    mockFetch("/api", autodata),
+    // mockFetch("/api", autodata),
   ]).then(async res => {
     // return res.json()
     if (res.status === 200) {
