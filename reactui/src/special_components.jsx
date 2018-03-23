@@ -16,12 +16,18 @@ export function ClassNodeSection(props) {
     const show_list = class_node_state.show_list
     return (
       <p>
-      <span className='h4'>{ node_name }:</span> un esercizio <Link text='a caso' lambda={() => {
+      <span className='h4'>{ node_name }:</span> prova un esercizio <Link text='a caso' lambda={() => {
           path_set('pageName', 'question',
             path_set('question_page_state', {loaded_question:false, questionId: node_questions[Math.floor(Math.random() * node_questions.length)]['_id']['$oid']})
           )
-        }}/>, oppure tutta la <Link text='lista' lambda={() => {
+        }}/>, scegline uno dalla <Link text='lista' lambda={() => {
           path_set('class_node_state/'+node_serial+'/show_list', true)
+        }}/> o guarda tutti gli <Link text='esercizi svolti' lambda={() => {
+          api('/api/node_questions', {node_serial: node_serial}).then(res => {
+            path_set('pageName', 'all_questions',
+              path_set('questions', res.questions)
+            )
+          })
         }}/>
         {
           (show_list) && (

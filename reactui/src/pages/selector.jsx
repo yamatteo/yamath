@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { AllQuestionsPage } from './all_questions.jsx'
 import { ClassePrima } from './classe_prima.jsx'
 import { ClasseSeconda } from './classe_seconda.jsx'
 import { ClasseTerza } from './classe_terza.jsx'
@@ -13,6 +14,7 @@ export function PageSelector(props) {
   const set = props.set || (props.app && props.app.set)
   const pageName = props.pageName || (props.app && props.app.state && props.app.state.pageName)
   const dict = {
+    all_questions: <AllQuestionsPage app={app}/>,
     classe_prima: <ClassePrima app={app}/>,
     classe_seconda: <ClasseSeconda app={app}/>,
     classe_terza: <ClasseTerza app={app}/>,
