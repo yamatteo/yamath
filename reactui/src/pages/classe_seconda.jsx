@@ -1,4 +1,5 @@
 import React from 'react'
+import { ClassNodeSection } from '../special_components.jsx'
 // import { Link, Navbar } from './generic_components.jsx'
 
 export function ClasseSeconda(props) {
@@ -8,6 +9,9 @@ export function ClasseSeconda(props) {
       <div className="row">
         <div className="col-lg-12 text-left">
           <h1 className="mt-5">Classe seconda</h1>
+          <ClassNodeSection app={app} node_serial='014'/>
+          <ClassNodeSection app={app} node_serial='015'/>
+          <ClassNodeSection app={app} node_serial='016'/>
           <h3>Cinque operazioni e precedenza</h3>
           <p>Ricordando le regole della precedenza, calcola il valore delle seguenti espressioni.</p>
           <ol type='a'>

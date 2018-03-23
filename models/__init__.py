@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 load_dotenv('/home/yamatteo/yamath/.env')
 import os
 try:
-    print(os.environ)
+    # print(os.environ)
     db_client = connect(host=os.environ['MONGODB_URI'])
 except KeyError:
     db_client = connect('testing')
