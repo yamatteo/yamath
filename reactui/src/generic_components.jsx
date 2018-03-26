@@ -2,7 +2,15 @@ import React, { Component } from 'react'
 
 export function Button(props) {
   const className = props.className !== undefined ? props.className : 'btn btn-primary'
-  const text = props.text !== undefined ? props.text : 'Click me'
+  const text = (() => {
+    if (props.text && !props.children) {
+      return props.text
+    } else if (!props.text && props.children) {
+      return props.children
+    } else {
+      return 'Click me!'
+    }
+  })();
   const onClick = (() => {
     if (props.lambda) {
       return props.lambda

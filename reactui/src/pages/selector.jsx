@@ -7,12 +7,20 @@ import { ClasseQuarta } from './classe_quarta.jsx'
 import { ClasseQuinta } from './classe_quinta.jsx'
 import { LoginPage } from './login.jsx'
 import { QuestionPage } from './question.jsx'
+import { RandomQuestionPage } from './random_question.jsx'
 import { WelcomePage } from './welcome.jsx'
 
 export function PageSelector(props) {
   const app = props.app
-  const set = props.set || (props.app && props.app.set)
-  const pageName = props.pageName || (props.app && props.app.state && props.app.state.pageName)
+  const arraySetState = app.arraySetState
+  const pageName = (() => {
+    try {
+      return app.state.pageState.pageName
+    } catch (e) {
+      alert('Deprecated pageName!')
+      return props.pageName || (props.app && props.app.state && props.app.state.pageName)
+    }
+  })();
   const dict = {
     all_questions: <AllQuestionsPage app={app}/>,
     classe_prima: <ClassePrima app={app}/>,
@@ -22,18 +30,19 @@ export function PageSelector(props) {
     classe_quinta: <ClasseQuinta app={app}/>,
     login: <LoginPage app={app}/>,
     question: <QuestionPage app={app}/>,
-    welcome: <WelcomePage set={set}/>,
+    random_question: <RandomQuestionPage app={app}/>,
+    welcome: <WelcomePage app={app}/>,
   }
   try {
     if (! dict[pageName] ) { throw 'KeyError' }
     return dict[pageName]
   } catch (e) {
     return (
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-12">
-            <h1 class="mt-5">Errore</h1>
-            <p>Per qualche motivo inspiegabile c'è stato un errore...</p>
+      <div className="container">
+        <div className="row">
+          <div className="col-lg-12">
+            <h1 className="mt-5">Errore</h1>
+            <p>La pagina richiesta non può essere visualizzata. Contatta l'autore.</p>
           </div>
         </div>
       </div>

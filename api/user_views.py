@@ -36,9 +36,21 @@ def node_questions(postdata):
     node_serial = postdata.get('node_serial', None)
     if node_serial:
         node = Node.objects.get(serial=node_serial)
-    elif question_id:
+    elif node_id:
         node = Node.objects.get(id=node_id)
     else:
         return {'status':400, 'description':'Can\'t find the node. No serial or id provided.'}
     questions = Question.objects.filter(node=node.id)
     return {'status':200, 'name':node.name, 'questions':json.loads(questions.to_json())}
+
+@freeRoute('/api/node')
+def node(postdata):
+    node_serial = postdata.get('node_serial', None)
+    if node_serial:
+        try:
+            node = Node.objects.get(serial=node_serial)
+        except Node.DoesNotExist:
+            return {'status':400, 'description':'The serial provider is not in the database.'}
+    else:
+        return {'status':400, 'description':'Can\'t find the node. No serial or id provided.'}
+    return {'status':200, 'node':json.loads(node.to_json())}

@@ -5,7 +5,6 @@ import { api } from '../fetch.jsx'
 
 export function ClassePrima(props) {
   const app = props.app
-  const set = app.set
   return (
     <div className="container">
       <div className="row">

@@ -2,7 +2,8 @@ import React from 'react'
 import { Link, Navbar } from '../generic_components.jsx'
 
 export function WelcomePage(props) {
-  const set = props.set || (props.app && props.app.set)
+  const app = props.app
+  const arraySetState = app.arraySetState
   return (
     <div className="container">
       <div className="row">
@@ -14,19 +15,19 @@ export function WelcomePage(props) {
           </p>
           <ul className="list-unstyled">
             <li>
-              <Link text="Classe prima" lambda={() => set({ pageName: 'classe_prima' })} />
+              <Link text="Classe prima" lambda={() => arraySetState(['pageState'], { pageName: 'classe_prima' })} />
             </li>
             <li>
-              <Link text="Classe seconda" lambda={() => set({ pageName: 'classe_seconda' })} />
+              <Link text="Classe seconda" lambda={() => arraySetState(['pageState'], { pageName: 'classe_seconda' })} />
             </li>
             <li>
-              <Link text="Classe terza" lambda={() => set({ pageName: 'classe_terza' })} />
+              <Link text="Classe terza" lambda={() => arraySetState(['pageState'], { pageName: 'classe_terza' })} />
             </li>
             <li>
-              <Link text="Classe quarta" lambda={() => set({ pageName: 'classe_quarta' })} />
+              <Link text="Classe quarta" lambda={() => arraySetState(['pageState'], { pageName: 'classe_quarta' })} />
             </li>
             <li>
-              <Link text="Classe quinta" lambda={() => set({ pageName: 'classe_quinta' })} />
+              <Link text="Classe quinta" lambda={() => arraySetState(['pageState'], { pageName: 'classe_quinta' })} />
             </li>
           </ul>
         </div>
