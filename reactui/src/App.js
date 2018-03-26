@@ -7,7 +7,7 @@ import './App.css'
 class App extends Component {
   constructor(props) {
     super(props)
-    this.state = { pageState: { pageName: 'classe_prima' } }
+    this.state = { pageState: { pageName: 'welcome' } }
     // this.set = (obj => this.setState(obj)).bind(this)
     // this.path_set = function set(path, value, prevState) {
     // // console.log('path_set', path, value);
