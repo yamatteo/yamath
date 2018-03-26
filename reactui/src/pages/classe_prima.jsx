@@ -12,11 +12,12 @@ export function ClassePrima(props) {
           <h1 className="mt-5">Classe prima</h1>
           <ClassNodeSection app={app} node_serial='010'/>
           <ClassNodeSection app={app} node_serial='011'/>
-          <ClassNodeSection app={app} node_serial='012'/>
-          <ClassNodeSection app={app} node_serial='013'/>
           <ClassNodeSection app={app} node_serial='014'/>
           <ClassNodeSection app={app} node_serial='015'/>
           <ClassNodeSection app={app} node_serial='016'/>
+          <ClassNodeSection app={app} node_serial='017'/>
+          <ClassNodeSection app={app} node_serial='012'/>
+          <ClassNodeSection app={app} node_serial='013'/>
           <h3>Cinque operazioni e precedenza</h3>
           <p>Ricordando le regole della precedenza, calcola il valore delle seguenti espressioni.</p>
           <ol type='a'>
