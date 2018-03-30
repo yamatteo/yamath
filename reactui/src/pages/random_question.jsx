@@ -43,7 +43,7 @@ export function RandomQuestionPage(props) {
             />
           </div>
         </div>
-        <div className="row">
+        <div className="row mt-1">
           <div className="col-12">{app.state.pageState.showSolution && <p>{question.solution}</p>}</div>
         </div>
       </div>

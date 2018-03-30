@@ -4,13 +4,14 @@ import os
 from mongoengine import *
 from .jsonready import JsonReady
 
-class User(Document, JsonReady):
+class User(Document):
     meta = {'strict':False}
     username = StringField(required=True, unique=True)
-    # email = EmailField(required=True, unique=True)
+    email = EmailField(unique=True, sparse=True)
     salt = StringField(required=True)
     hashed = StringField(required=True)
-    isadmin = BooleanField(default=False)
+    is_admin = BooleanField(default=False)
+    is_teacher = BooleanField(default=False)
 
     def __str__(self):
         return "User %s" % self.username

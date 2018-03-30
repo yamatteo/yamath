@@ -1,14 +1,9 @@
 from mongoengine import *
-from .jsonready import JsonReady
 
-class Mean(EmbeddedDocument, JsonReady):
-    node = ReferenceField("Node")
-    history = StringField()
-    value = FloatField()
-
-class Profile(Document, JsonReady):
+class Profile(Document):
     user = ReferenceField("User")
-    means = EmbeddedDocumentListField("Mean")
+    means = DictField()
+
 
     def __str__(self):
         try:

@@ -15,8 +15,8 @@ def profile(postdata):
         profile = Profile.objects.get(user=user)
     except Profile.DoesNotExist:
         profile = Profile(user=user).save()
-    nodes = map(lambda n: n.jref(), Node.objects())
-    return {"profile":profile.jref(depth=2), "nodes":nodes}
+    # nodes = Node.objects()
+    return {'profile': json.loads(profile.to_json())}
 
 @freeRoute('/api/question')
 def question(postdata):
