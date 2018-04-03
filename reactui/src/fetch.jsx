@@ -54,8 +54,8 @@ function timeout(ms) {
 }
 
 export function api(url, data) {
-  return fetch("http://127.0.0.1:5000"+url, { method: "POST", body: JSON.stringify(data) })
-  // return fetch("http://yamatteo.pythonanywhere.com"+url, { method: "POST", body: JSON.stringify(data) })
+  // return fetch("http://127.0.0.1:5000"+url, { method: "POST", body: JSON.stringify(data) })
+  return fetch("http://yamatteo.pythonanywhere.com"+url, { method: "POST", body: JSON.stringify(data) })
   .then(async res => {
     // return res.json()
     if (res.status === 200) {
