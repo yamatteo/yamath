@@ -1,75 +1,39 @@
 import React, { Component } from 'react'
 import { api } from '../fetch.jsx'
-import { Form, Input } from '../generic_components.jsx'
+import { AutoForm, Link } from '../generic_components.jsx'
 
 export function LoginPage(props) {
   const app = props.app
-  const pageState = props.pageState || app.state.pageState || {}
-  const username = props.pageState && props.pageState.loginForm && props.pageState.loginForm.username
-  const password = props.pageState && props.pageState.loginForm && props.pageState.loginForm.password
+  const set = app.set
+  const page_state = props.page_state || app.state.page_state || {}
+  const username = props.page_state && props.page_state.loginForm && props.page_state.loginForm.username
+  const password = props.page_state && props.page_state.loginForm && props.page_state.loginForm.password
   return (
     <div className="container">
-      <div className='row'>
-        <div className='col-lg-12'>
-        <h1 className='mt-5'>Benvenut@ eternauta</h1>
-      <div>
-        <p>Prima di procedere, inserisci nome utente e password:</p>
-        <Form
-          lambda={() => {
-            api(
-              '/api/login',
-              {
-                username: username,
-                password: password,
-              },
-              {
-                username: 'mockUser',
-                fasthash: '0',
-                isadmin: false,
-              },
-            ).then(res => {
-              if (!res.erroneous) {
-                app.set({ userState: Object.assign(res, { isSignedin: true, pageName: 'main' }) })
-              } else {
-                app.set({ userState: {} })
-              }
-            })
-          }}
-        >
-          <div className="form-group">
-            <label>Username</label>
-            <Input
-              name="username"
-              className="form-control"
-              type="text"
-              value={username}
-              lambda={event => {
-                const value = event.target.value
-                const new_pageState = Object.assign(pageState, { loginForm: { username: value, password: password } })
-                console.log('from', event, 'gonna set', new_pageState)
-                app.set({ pageState: new_pageState })
+      <div className="row">
+        <div className="col-lg-12">
+          <h3 className="mt-5">Pagina di accesso</h3>
+          <div>
+            <p>Prima di procedere, inserisci nome utente e password:</p>
+            <AutoForm
+              app={app}
+              endpoint="/api/login"
+              inputs={{
+                username: { label: 'Username' },
+                password: { label: 'Password', type: 'password' },
+                submit: { type: 'submit', value: 'Accedi', className: 'btn btn-secondary w-100' },
+              }}
+              lambda={(res)=>{
+                set(['user_state'], res)(['page_state'], {page_name:'main'})
               }}
             />
           </div>
-          <div className="form-group">
-            <label>Password</label>
-            <Input
-              name="password"
-              className="form-control"
-              type="password"
-              value={password}
-              lambda={event => {
-                const value = event.target.value
-                const new_pageState = Object.assign(pageState, { loginForm: { username: username, password: value } })
-                app.set({ pageState: new_pageState })
-              }}
-            />
-          </div>
-          <Input name="submit" className="btn btn-primary" type="submit" value="Accedi" />
-        </Form>
+          <hr />
+        </div>
+        <div className='col-12'>
+          <p>Se non hai un profilo puoi richiederne uno alla pagina di <Link lambda={() => set(['page_state'], {page_name: 'signup'})}>registrazione</Link>.</p>
+        </div>
       </div>
-    </div>
-    </div>
     </div>
   )
 }

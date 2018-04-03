@@ -7,73 +7,49 @@ import './App.css'
 class App extends Component {
   constructor(props) {
     super(props)
-    this.state = { pageState: { pageName: 'welcome' } }
-    // this.set = (obj => this.setState(obj)).bind(this)
-    // this.path_set = function set(path, value, prevState) {
-    // // console.log('path_set', path, value);
-    // const array = path.split('/')
-    // const nextStateByArray = function(prevState, array, value) {
-    //   // console.log('prevState', prevState)
-    //   // console.log('array', array);
-    //   let nextState = JSON.parse(JSON.stringify(prevState))
-    //   if (array.length == 1) {
-    //     nextState[array[0]] = value
-    //   } else {
-    //     const subState = prevState[array[0]] || {}
-    //     nextState[array[0]] = nextStateByArray(subState, array.slice(1), value)
-    //   }
-    //   // console.log('retrning', nextState);
-    //   return nextState
-    // }
-    //   const state = prevState || this.state
-    //   const nextState = nextStateByArray(state, array, value)
-    //   this.setState(nextState)
-    //   return nextState
-    // }.bind(this)
-    this.arraySetState = this.arraySetState.bind(this)
+    this.state = { page_state: { page_name: 'welcome' } }
+    this.set = this.set.bind(this)
     this.handleKeyPress = this.handleKeyPress.bind(this)
   }
-  arraySetState(array, value, prevState) {
-    const _array_set_state = function(array, value, prevState) {
-      const nextState = JSON.parse(JSON.stringify(prevState))
-      if (array.length == 1) {
-        nextState[array[0]] = value
-      } else {
-        const subState = prevState[array[0]] || {}
-        nextState[array[0]] = _array_set_state(array.slice(1), value, subState)
-      }
-      return nextState
-    }
-    let nextState = {}
-    if (prevState == undefined) {
-      nextState = _array_set_state(array, value, this.state)
+  _array_set_state(array, value, prevState) {
+    const nextState = JSON.parse(JSON.stringify(prevState))
+    if (array.length == 1) {
+      nextState[array[0]] = value
     } else {
-      nextState = _array_set_state(array, value, prevState)
+      const subState = prevState[array[0]] || {}
+      nextState[array[0]] = this._array_set_state(array.slice(1), value, subState)
     }
+    return nextState
+  }
+  set(array, value, _prevState) {
+    const prevState = (() => {
+      if (_prevState == undefined) {
+        return this.state
+      } else {
+        return _prevState
+      }
+    })()
+    const nextState = this._array_set_state(array, value, prevState)
     this.setState(nextState)
-    return new Promise((resolve, reject) => resolve(nextState))
+    return (array, value) => this.set(array, value, nextState)
   }
   componentDidMount() {
     try {
       window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub, 'root'])
-    } catch (e) {
-      ;
-    }
+    } catch (e) {}
     document.addEventListener('keydown', this.handleKeyPress, false)
   }
   componentDidUpdate() {
     try {
       window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub, 'root'])
-    } catch (e) {
-      ;
-    }
+    } catch (e) {}
   }
   handleKeyPress(event) {
     if (event.key == 'Insert') {
       if (this.state.experimental) {
-        this.setState({ experimental: false })
+        this.set(['experimental'], false)(['foo'], 'baz')
       } else {
-        this.setState({ experimental: true })
+        this.set(['experimental'], true)(['foo'], 'bar')
       }
     }
   }
@@ -83,18 +59,43 @@ class App extends Component {
         <Navbar
           className="navbar navbar-expand navbar-dark bg-dark"
           // className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top"
-          brand={
-            <Link
-              className="navbar-brand"
-              lambda={() => this.arraySetState(['pageState'], { pageName: 'welcome' })}
-              text={this.state.experimental ? 'Xper' : 'Yamath'}
-            />
+          brand={ (() => {
+            if (this.state.user_state && this.state.user_state.username) {
+              return (
+                <Link
+                className="navbar-brand"
+                lambda={() => this.set(['page_state'], { page_name: 'main' })}
+                text={this.state.experimental ? 'Xper' : 'Yamath'}
+              />
+            )
+            } else {
+              return (
+                <Link
+                className="navbar-brand"
+                lambda={() => this.set(['page_state'], { page_name: 'welcome' })}
+                text={this.state.experimental ? 'Xper' : 'Yamath'}
+              />
+            )
+            }
+          })()
           }
+          rightAligned={ (() => {
+            if (this.state.user_state && this.state.user_state.username) {
+              return [
+                <Link className='nav-link' lambda={()=> this.set(['page_state'], {page_name: 'login'})(['user_state'], {})}><span className='oi oi-account-logout'/></Link>,
+              ]
+            } else {
+              return [
+                <Link className='nav-link' lambda={()=> this.set(['page_state'], {page_name: 'login'})}><span className='oi oi-account-login'/></Link>,
+              ]
+            }
+          })() }
         >
+
           {/* {this.state.experimental && (
             <Link
               className="nav-link"
-              lambda={() => this.setState({ pageName: 'question', questionId: '5ab13d73ce616410a749cd06' })}
+              lambda={() => this.setState({ page_name: 'question', questionId: '5ab13d73ce616410a749cd06' })}
               text="question"
             />
           )} */}

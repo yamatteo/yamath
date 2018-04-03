@@ -3,9 +3,8 @@ import { Button, Link, Navbar } from '../generic_components.jsx'
 import { api } from '../fetch.jsx'
 
 export function QuestionPage(props) {
-  const set = props.set || (props.app && props.app.set)
   const app = props.app
-  const arraySetState = app.arraySetState
+  const set = app.set
   const path_set = app.path_set
   const question = (() => {
     try {
@@ -28,7 +27,7 @@ export function QuestionPage(props) {
             <Button
               text="Mostra soluzione"
               className="btn btn-outline-warning"
-              lambda={() => arraySetState(['question_page_state', 'showSolution'], true)}
+              lambda={() => set(['question_page_state', 'showSolution'], true)}
             />
           </div>
           <div className="col-md-9">{app.state.question_page_state.showSolution && <p>{question.solution}</p>}</div>
@@ -38,8 +37,7 @@ export function QuestionPage(props) {
   } else {
     const question_id = app.state.question_page_state.questionId
     api('/api/question', { id: question_id })
-      .then(res => arraySetState(['question_page_state', 'loaded_question'], res.question))
-      .then(state => arraySetState(['question_page_state', 'showSolution'], false, state))
+      .then(res => set(['question_page_state', 'loaded_question'], res.question)(['question_page_state', 'showSolution'], false))
     return (
       <div className="container">
         <div className="row">

@@ -1,4 +1,55 @@
 import React, { Component } from 'react'
+import { api } from './fetch.jsx'
+
+export function AutoForm(props) {
+  const app = props.app
+  const endpoint = props.endpoint
+  const lambda = props.lambda
+
+  const values = {}
+  Object.keys(props.inputs).forEach(key => {
+    try {
+      values[key] = app.state.page_state.form[key]
+    } catch (e) {
+      values[key] = undefined
+    }
+  })
+
+  const inputs_info = []
+  Object.keys(props.inputs).forEach(key => {
+    const elem = props.inputs[key]
+    inputs_info.push({
+      key: key,
+      label: elem.label,
+      name: elem.name || key,
+      className: elem.className || 'form-control',
+      type: elem.type || 'text',
+      value: elem.value || values[key],
+      lambda: elem.lambda || (event => app.set(['page_state', 'form', key], event.target.value)),
+    })
+  })
+
+  return (
+    <Form
+      lambda={() => {
+        api(endpoint, values).then(res => {
+          if (!res.erroneous) {
+            lambda(res)
+          } else {
+            alert("C'è stato un errore")
+          }
+        })
+      }}
+    >
+      {inputs_info.map(info => (
+        <div className="form-group" key={info.key}>
+          {info.label && <label>{info.label}</label>}
+          <Input name={info.name} className={info.className} type={info.type} value={info.value} lambda={info.lambda} />
+        </div>
+      ))}
+    </Form>
+  )
+}
 
 export function Button(props) {
   const className = props.className !== undefined ? props.className : 'btn btn-primary'
@@ -10,7 +61,7 @@ export function Button(props) {
     } else {
       return 'Click me!'
     }
-  })();
+  })()
   const onClick = (() => {
     if (props.lambda) {
       return props.lambda
@@ -135,12 +186,18 @@ export function Input(props) {
 }
 export function Link(props) {
   const className = props.className
-  const text = props.text || 'Link (missing text)'
+  const text = (() => {
+    if (props.children) {
+      return props.children
+    } else if (props.text) {
+      return props.text
+    } else {
+      return 'link (missing text)'
+    }
+  })()
   const onClick = (() => {
-    if (props.lambda && !props.action) {
+    if (props.lambda) {
       return props.lambda
-    } else if (!props.lambda && props.action && props.dispatch) {
-      return () => props.dispatch(props.action)
     } else {
       return () => alert('Link was clicked (no action)')
     }
@@ -148,7 +205,7 @@ export function Link(props) {
   return (
     <a
       className={className}
-      href="#"
+      href="/"
       onClick={event => {
         event.preventDefault()
         onClick()
@@ -158,6 +215,7 @@ export function Link(props) {
     </a>
   )
 }
+
 export function Navbar(props) {
   const className = (() => {
     if (props.className) {
@@ -173,7 +231,7 @@ export function Navbar(props) {
   const children = props.children instanceof Array ? props.children : [props.children]
   const brand = props.brand
   const links = children
-  const rightAligned = (props.rightAligned instanceof Array ? props.rightAligned : [props.rightAligned])
+  const rightAligned = props.rightAligned instanceof Array ? props.rightAligned : [props.rightAligned]
   // const buttons = children.filter(child => child.type.name === "Button");
   // console.log("className", className);
   // console.log("Navbar children", props.children);

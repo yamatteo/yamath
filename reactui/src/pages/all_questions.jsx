@@ -5,8 +5,8 @@ import { api } from '../fetch.jsx'
 
 export function AllQuestionsPage(props) {
   const app = props.app
-  const arraySetState = app.arraySetState
-  const node_serial = app.state.pageState.node_serial
+  const set = app.set
+  const node_serial = app.state.page_state.node_serial
   const questions = (() => {
     try {
       return app.state.nodes[node_serial].questions
@@ -35,7 +35,7 @@ export function AllQuestionsPage(props) {
     )
   } else {
     api('/api/node_questions', { node_serial: node_serial }).then(res =>
-      arraySetState(['nodes', node_serial, 'questions'], res.questions),
+      set(['nodes', node_serial, 'questions'], res.questions),
     )
     return (
       <div className="container">
