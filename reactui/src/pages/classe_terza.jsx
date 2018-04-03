@@ -12,6 +12,8 @@ export function ClasseTerza(props) {
           <ClassNodeSection app={app} node_serial='015'/>
           <ClassNodeSection app={app} node_serial='016'/>
           <ClassNodeSection app={app} node_serial='017'/>
+          <ClassNodeSection app={app} node_serial='012'/>
+          <ClassNodeSection app={app} node_serial='018'/>
           <h3>Cinque operazioni e precedenza</h3>
           <p>Ricordando le regole della precedenza, calcola il valore delle seguenti espressioni.</p>
           <ol type='a'>

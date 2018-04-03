@@ -10,6 +10,7 @@ export function ClasseQuinta(props) {
           <h1 className="mt-5">Classe quinta</h1>
           <ClassNodeSection app={app} node_serial='015'/>
           <ClassNodeSection app={app} node_serial='017'/>
+          <ClassNodeSection app={app} node_serial='018'/>
           <h3>Studio di funzioni (dominio)</h3>
           <p>Stabilisci il dominio delle seguenti funzioni.</p>
           <ol type='a'>
