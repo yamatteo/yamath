@@ -10,10 +10,8 @@ def signup(postdata):
     import os
     username = postdata.get("username", None)
     email = postdata.get('email', None)
-    password = os.urandom(3).hex()
-    repassword = password
-    # password = postdata.get("password", None)
-    # repassword = postdata.get("repassword", None)
+    password = postdata.get('password', '')
+    repassword = postdata.get('repassword', '')
     try:
         if password == repassword:
             ns = User.getSalt()
@@ -38,6 +36,6 @@ def login(postdata):
     if User.validPw(password, u.salt, u.hashed):
         fh = User.getSalt()
         fasthash_dictionary[username] = fh
-        return {"username": username, "fasthash":fh, "isadmin":u.isadmin}
+        return {"username": username, "fasthash":fh, "is_admin":u.is_admin}
     else:
         raise JsonError(message="La password non corrisponde.")

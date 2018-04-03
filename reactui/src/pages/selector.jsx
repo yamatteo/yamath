@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import { AllQuestionsPage } from './all_questions.jsx'
+import { AutoQuestionPage } from './auto_question.jsx'
 import { ClassePrima } from './classe_prima.jsx'
 import { ClasseSeconda } from './classe_seconda.jsx'
 import { ClasseTerza } from './classe_terza.jsx'
 import { ClasseQuarta } from './classe_quarta.jsx'
 import { ClasseQuinta } from './classe_quinta.jsx'
 import { LoginPage } from './login.jsx'
+import { MainPage } from './main.jsx'
 import { QuestionPage } from './question.jsx'
 import { RandomQuestionPage } from './random_question.jsx'
 import { SignupPage } from './signup.jsx'
@@ -23,12 +25,14 @@ export function PageSelector(props) {
   })();
   const dict = {
     all_questions: <AllQuestionsPage app={app}/>,
+    auto_question: <AutoQuestionPage app={app}/>,
     classe_prima: <ClassePrima app={app}/>,
     classe_seconda: <ClasseSeconda app={app}/>,
     classe_terza: <ClasseTerza app={app}/>,
     classe_quarta: <ClasseQuarta app={app}/>,
     classe_quinta: <ClasseQuinta app={app}/>,
     login: <LoginPage app={app}/>,
+    main: <MainPage app={app}/>,
     question: <QuestionPage app={app}/>,
     random_question: <RandomQuestionPage app={app}/>,
     signup: <SignupPage app={app}/>,

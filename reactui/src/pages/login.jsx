@@ -23,6 +23,9 @@ export function LoginPage(props) {
                 password: { label: 'Password', type: 'password' },
                 submit: { type: 'submit', value: 'Accedi', className: 'btn btn-secondary w-100' },
               }}
+              lambda={(res)=>{
+                set(['user_state'], res)(['page_state'], {page_name:'main'})
+              }}
             />
           </div>
           <hr />

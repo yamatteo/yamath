@@ -59,16 +59,37 @@ class App extends Component {
         <Navbar
           className="navbar navbar-expand navbar-dark bg-dark"
           // className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top"
-          brand={
-            <Link
-              className="navbar-brand"
-              lambda={() => this.set(['page_state'], { page_name: 'welcome' })}
-              text={this.state.experimental ? 'Xper' : 'Yamath'}
-            />
+          brand={ (() => {
+            if (this.state.user_state && this.state.user_state.username) {
+              return (
+                <Link
+                className="navbar-brand"
+                lambda={() => this.set(['page_state'], { page_name: 'main' })}
+                text={this.state.experimental ? 'Xper' : 'Yamath'}
+              />
+            )
+            } else {
+              return (
+                <Link
+                className="navbar-brand"
+                lambda={() => this.set(['page_state'], { page_name: 'welcome' })}
+                text={this.state.experimental ? 'Xper' : 'Yamath'}
+              />
+            )
+            }
+          })()
           }
-          rightAligned={ [
-            <Link className='nav-link' lambda={()=> this.set(['page_state'], {page_name: 'login'})}><span className='oi oi-account-login'/></Link>,
-          ] }
+          rightAligned={ (() => {
+            if (this.state.user_state && this.state.user_state.username) {
+              return [
+                <Link className='nav-link' lambda={()=> this.set(['page_state'], {page_name: 'login'})(['user_state'], {})}><span className='oi oi-account-logout'/></Link>,
+              ]
+            } else {
+              return [
+                <Link className='nav-link' lambda={()=> this.set(['page_state'], {page_name: 'login'})}><span className='oi oi-account-login'/></Link>,
+              ]
+            }
+          })() }
         >
 
           {/* {this.state.experimental && (
