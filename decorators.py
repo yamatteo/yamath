@@ -51,6 +51,7 @@ class userRoute(object):
             except Exception as e:
                 print("exception", e)
                 raise JsonError(description='Unauthorized request')
+            print("FH DICT is", fasthash_dictionary)
             if fasthash_dictionary[username] == fasthash:
                 return f(postdata, *args, **kwargs)
             else:

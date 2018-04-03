@@ -1,6 +1,7 @@
 from mongoengine import *
 
 class Profile(Document):
+    meta = {'strict':False}
     user = ReferenceField("User")
     means = DictField()
 

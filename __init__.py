@@ -35,7 +35,7 @@ admin.add_view(ModelView(Question, 'Question'))
 admin.add_view(ModelView(Profile, 'Profile'))
 
 
-fasthash_dictionary = {"admin":"0"}
+fasthash_dictionary = {}
 # try:
 #     db_client = connect(host=os.environ['MONGODB_URI'])
 # except KeyError:

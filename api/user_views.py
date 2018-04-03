@@ -14,7 +14,9 @@ def profile(postdata):
     try:
         profile = Profile.objects.get(user=user)
     except Profile.DoesNotExist:
-        profile = Profile(user=user).save()
+        print("Realize there is no profile")
+        profile = Profile(user=user)
+        profile.save()
     for node in Node.objects.all():
         if node.serial not in profile.means.keys():
             profile.means[node.serial] = 0

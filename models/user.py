@@ -7,7 +7,7 @@ from .jsonready import JsonReady
 class User(Document):
     meta = {'strict':False}
     username = StringField(required=True, unique=True)
-    email = EmailField(unique=True, sparse=True)
+    email = EmailField()
     salt = StringField(required=True)
     hashed = StringField(required=True)
     is_admin = BooleanField(default=False)
