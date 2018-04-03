@@ -4,11 +4,11 @@ import { api } from '../fetch.jsx'
 
 export function RandomQuestionPage(props) {
   const app = props.app
-  const arraySetState = app.arraySetState
-  const node_serial = app.state.pageState.node_serial
+  const set = app.set
+  const node_serial = app.state.page_state.node_serial
   const question = (() => {
     try {
-      return props.app.state.pageState.question
+      return props.app.state.page_state.question
     } catch (e) {
       return undefined
     }
@@ -27,7 +27,7 @@ export function RandomQuestionPage(props) {
             <Button
               text="Mostra soluzione"
               className="btn btn-warning w-100"
-              lambda={() => arraySetState(['pageState', 'showSolution'], true)}
+              lambda={() => set(['page_state', 'showSolution'], true)}
             />
           </div>
           <div className="col-sm-2" />
@@ -36,15 +36,13 @@ export function RandomQuestionPage(props) {
               text="Altro simile"
               className="btn btn-success w-100"
               lambda={() =>
-                arraySetState(['pageState', 'showSolution'], false).then(state =>
-                  arraySetState(['pageState', 'question'], null, state),
-                )
+                set(['page_state', 'showSolution'], false)(['page_state', 'question'], null)
               }
             />
           </div>
         </div>
         <div className="row mt-1">
-          <div className="col-12">{app.state.pageState.showSolution && <p>{question.solution}</p>}</div>
+          <div className="col-12">{app.state.page_state.showSolution && <p>{question.solution}</p>}</div>
         </div>
       </div>
     )
@@ -57,10 +55,10 @@ export function RandomQuestionPage(props) {
       }
     })()
     if (node_questions) {
-      arraySetState(['pageState', 'question'], node_questions[Math.floor(Math.random() * node_questions.length)])
+      set(['page_state', 'question'], node_questions[Math.floor(Math.random() * node_questions.length)])
     } else {
       api('/api/node_questions', { node_serial: node_serial }).then(res =>
-        arraySetState(['nodes', node_serial, 'questions'], res.questions),
+        set(['nodes', node_serial, 'questions'], res.questions),
       )
     }
     return (

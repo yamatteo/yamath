@@ -8,17 +8,17 @@ import { ClasseQuinta } from './classe_quinta.jsx'
 import { LoginPage } from './login.jsx'
 import { QuestionPage } from './question.jsx'
 import { RandomQuestionPage } from './random_question.jsx'
+import { SignupPage } from './signup.jsx'
 import { WelcomePage } from './welcome.jsx'
 
 export function PageSelector(props) {
   const app = props.app
-  const arraySetState = app.arraySetState
-  const pageName = (() => {
+  const page_name = (() => {
     try {
-      return app.state.pageState.pageName
+      return app.state.page_state.page_name
     } catch (e) {
-      alert('Deprecated pageName!')
-      return props.pageName || (props.app && props.app.state && props.app.state.pageName)
+      alert('Deprecated page_name!')
+      return props.page_name || (props.app && props.app.state && props.app.state.page_name)
     }
   })();
   const dict = {
@@ -31,11 +31,12 @@ export function PageSelector(props) {
     login: <LoginPage app={app}/>,
     question: <QuestionPage app={app}/>,
     random_question: <RandomQuestionPage app={app}/>,
+    signup: <SignupPage app={app}/>,
     welcome: <WelcomePage app={app}/>,
   }
   try {
-    if (! dict[pageName] ) { throw 'KeyError' }
-    return dict[pageName]
+    if (! dict[page_name] ) { throw 'KeyError' }
+    return dict[page_name]
   } catch (e) {
     return (
       <div className="container">

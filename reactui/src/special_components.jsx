@@ -4,7 +4,7 @@ import { api } from './fetch.jsx'
 
 export function ClassNodeSection(props) {
   const app = props.app
-  const arraySetState = app.arraySetState
+  const set = app.set
   const node_serial = props.node_serial
   const node = (() => {
     try {
@@ -21,8 +21,8 @@ export function ClassNodeSection(props) {
         <div className="col-md-4 col-12">
           <div className='no-gutters'>
           <div className="row">
-            <div className='col-6 p-2'><Button className="btn btn-secondary w-100" lambda={() => arraySetState(['pageState'], {pageName:'random_question', node_serial:node_serial})}>Uno a caso</Button></div>
-            <div className='col-6 p-2'><Button className="btn btn-secondary w-100" lambda={() => arraySetState(['pageState'], {pageName:'all_questions', node_serial:node_serial})}>Lista completa</Button></div>
+            <div className='col-6 p-2'><Button className="btn btn-secondary w-100" lambda={() => set(['page_state'], {page_name:'random_question', node_serial:node_serial})}>Uno a caso</Button></div>
+            <div className='col-6 p-2'><Button className="btn btn-secondary w-100" lambda={() => set(['page_state'], {page_name:'all_questions', node_serial:node_serial})}>Lista completa</Button></div>
             {/* <div className='col-sm-4 p-1'><Button className="btn btn-secondary w-100">Stampa</Button></div> */}
           </div>
         </div>
@@ -30,8 +30,8 @@ export function ClassNodeSection(props) {
       </div>
     )
   } else {
-    api('/api/node', { node_serial: node_serial }).then(res => arraySetState(['nodes', node_serial], res.node))
-    // api('/api/node_questions', { node_serial: node_serial }).then(res => arraySetState(['class_node_state', node_serial], {loaded:true, name:res.name, questions:res.questions}))
+    api('/api/node', { node_serial: node_serial }).then(res => set(['nodes', node_serial], res.node))
+    // api('/api/node_questions', { node_serial: node_serial }).then(res => set(['class_node_state', node_serial], {loaded:true, name:res.name, questions:res.questions}))
     return <h3>...caricamento...</h3>
   }
 }
@@ -42,8 +42,8 @@ export function ClassNodeSection(props) {
 //     <Link
 //       text="a caso"
 //       lambda={() =>
-//         arraySetState(['pageState'], { pageName: 'question' }).then(state =>
-//           arraySetState(
+//         set(['page_state'], { page_name: 'question' }).then(state =>
+//           set(
 //             ['question_page_state'],
 //             {
 //               loaded_question: false,
@@ -54,14 +54,14 @@ export function ClassNodeSection(props) {
 //         )
 //       }
 //     />, scegline uno dalla{' '}
-//     <Link text="lista" lambda={() => arraySetState(['class_node_state', node_serial, 'show_list'], true)} /> o
+//     <Link text="lista" lambda={() => set(['class_node_state', node_serial, 'show_list'], true)} /> o
 //     guarda tutti gli{' '}
 //     <Link
 //       text="esercizi svolti"
 //       lambda={() =>
 //         api('/api/node_questions', { node_serial: node_serial })
-//           .then(res => arraySetState(['questions'], res.questions))
-//           .then(state => arraySetState(['pageState'], { pageName: 'all_questions' }, state))
+//           .then(res => set(['questions'], res.questions))
+//           .then(state => set(['page_state'], { page_name: 'all_questions' }, state))
 //       }
 //     />
 //     {show_list && (
@@ -71,10 +71,10 @@ export function ClassNodeSection(props) {
 //             <Link
 //               text={question.serial}
 //               lambda={() =>
-//                 arraySetState(['question_page_state'], {
+//                 set(['question_page_state'], {
 //                   loaded_question: false,
 //                   questionId: question['_id']['$oid'],
-//                 }).then(state => arraySetState(['pageState'], { pageName: 'question' }, state))
+//                 }).then(state => set(['page_state'], { page_name: 'question' }, state))
 //               }
 //             />
 //           </li>
@@ -99,8 +99,8 @@ export function ClassNodeSection(props) {
 //   //       <Link
 //   //         text="a caso"
 //   //         lambda={() =>
-//   //           arraySetState(['pageState'], { pageName: 'question' }).then(state =>
-//   //             arraySetState(
+//   //           set(['page_state'], { page_name: 'question' }).then(state =>
+//   //             set(
 //   //               ['question_page_state'],
 //   //               {
 //   //                 loaded_question: false,
@@ -111,14 +111,14 @@ export function ClassNodeSection(props) {
 //   //           )
 //   //         }
 //   //       />, scegline uno dalla{' '}
-//   //       <Link text="lista" lambda={() => arraySetState(['class_node_state', node_serial, 'show_list'], true)} /> o
+//   //       <Link text="lista" lambda={() => set(['class_node_state', node_serial, 'show_list'], true)} /> o
 //   //       guarda tutti gli{' '}
 //   //       <Link
 //   //         text="esercizi svolti"
 //   //         lambda={() =>
 //   //           api('/api/node_questions', { node_serial: node_serial })
-//   //             .then(res => arraySetState(['questions'], res.questions))
-//   //             .then(state => arraySetState(['pageState'], { pageName: 'all_questions' }, state))
+//   //             .then(res => set(['questions'], res.questions))
+//   //             .then(state => set(['page_state'], { page_name: 'all_questions' }, state))
 //   //         }
 //   //       />
 //   //       {show_list && (
@@ -128,10 +128,10 @@ export function ClassNodeSection(props) {
 //   //               <Link
 //   //                 text={question.serial}
 //   //                 lambda={() =>
-//   //                   arraySetState(['question_page_state'], {
+//   //                   set(['question_page_state'], {
 //   //                     loaded_question: false,
 //   //                     questionId: question['_id']['$oid'],
-//   //                   }).then(state => arraySetState(['pageState'], { pageName: 'question' }, state))
+//   //                   }).then(state => set(['page_state'], { page_name: 'question' }, state))
 //   //                 }
 //   //               />
 //   //             </li>
@@ -141,7 +141,7 @@ export function ClassNodeSection(props) {
 //   //     </p>
 //   //   )
 //   // } else {
-//   //   api('/api/node_questions', { node_serial: node_serial }).then(res => arraySetState(['class_node_state', node_serial], {loaded:true, name:res.name, questions:res.questions}))
+//   //   api('/api/node_questions', { node_serial: node_serial }).then(res => set(['class_node_state', node_serial], {loaded:true, name:res.name, questions:res.questions}))
 //   //   return <h3>...caricamento...</h3>
 //   }
 // }
