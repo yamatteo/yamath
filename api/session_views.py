@@ -16,14 +16,14 @@ def signup(postdata):
         if password == repassword:
             ns = User.getSalt()
             nh = User.getHash(password, ns)
-            nu = User(username=username, salt=ns, hashed=nh)
+            nu = User(username=username, salt=ns, hashed=nh, email=email)
             nu.save()
             # Send the email with the password
             return {"message":"Utente creato con successo."}
         else:
             raise JsonError(message="Le due password non coincidono.")
     except NotUniqueError:
-        raise JsonError(message="Nome utente già in uso.")
+        raise JsonError(message="Nome utente o email già in uso.")
 
 @freeRoute("/api/login")
 def login(postdata):
