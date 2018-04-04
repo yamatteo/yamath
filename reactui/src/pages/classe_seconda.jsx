@@ -15,7 +15,7 @@ export function ClasseSeconda(props) {
           <ClassNodeSection app={app} node_serial='017'/>
           <ClassNodeSection app={app} node_serial='012'/>
           <ClassNodeSection app={app} node_serial='018'/>
-          <h3>Cinque operazioni e precedenza</h3>
+          {/* <h3>Cinque operazioni e precedenza</h3>
           <p>Ricordando le regole della precedenza, calcola il valore delle seguenti espressioni.</p>
           <ol type='a'>
             <li>{'$ -5 \\cdot (12 - 3 + 4) - 2 \\cdot [3 - 16 : (-2 +4)]^2 $'}</li>
@@ -55,7 +55,7 @@ export function ClasseSeconda(props) {
             <li>{'$\\frac32 a^2 + \\frac12 a - 1 \\qquad$ per $a = 0$, per $a = -1$ e per $a = 2$'}</li>
             <li>{'$2x^5 - 8x^4 + 3x^3 + 2x^2 - 7x + 8 \\qquad$ per $x = 1$ e per $x = -1$'}</li>
             <li>{'$2a - b - 3ab \\qquad$ per $a = \\frac12$ e $b = -\\frac13$'}</li>
-          </ol>
+          </ol> */}
         </div>
       </div>
     </div>

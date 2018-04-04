@@ -20,7 +20,7 @@ export function ClassePrima(props) {
           <ClassNodeSection app={app} node_serial='013'/>
           <ClassNodeSection app={app} node_serial='018'/>
           <ClassNodeSection app={app} node_serial='019'/>
-          <h3>Cinque operazioni e precedenza</h3>
+          {/* <h3>Cinque operazioni e precedenza</h3>
           <p>Ricordando le regole della precedenza, calcola il valore delle seguenti espressioni.</p>
           <ol type='a'>
             <li>{'$ -5 \\cdot (12 - 3 + 4) - 2 \\cdot [3 - 16 : (-2 +4)]^2 $'}</li>
@@ -42,7 +42,7 @@ export function ClassePrima(props) {
             <li>{'$ \\frac{+3}{2} : \\frac{-3}{2}, \\quad \\quad \\frac25 : \\frac58 : \\left( - \\frac56 \\right) $'}</li>
             <li>{'$ \\left( - \\frac23 \\right)^2, \\quad \\quad \\left( \\frac12 - 1 \\right)^3 $'}</li>
             <li>{'$ \\left( - \\frac12 \\right)^3, \\quad \\quad \\left(-\\frac35 \\right)^0 $'}</li>
-          </ol>
+          </ol> */}
           {/* <p class="lead">Complete with pre-defined file paths and responsive navigation!</p> */}
           {/* <ul class="list-unstyled">
             <li>Bootstrap 4.0.0</li>

@@ -13,7 +13,7 @@ export function ClasseQuarta(props) {
           <ClassNodeSection app={app} node_serial='016'/>
           <ClassNodeSection app={app} node_serial='017'/>
           <ClassNodeSection app={app} node_serial='018'/>
-          <h3>Cinque operazioni e precedenza</h3>
+          {/* <h3>Cinque operazioni e precedenza</h3>
           <p>Ricordando le regole della precedenza, calcola il valore delle seguenti espressioni.</p>
           <ol type='a'>
             <li>{'$ -5 \\cdot (12 - 3 + 4) - 2 \\cdot [3 - 16 : (-2 +4)]^2 $'}</li>
@@ -30,7 +30,7 @@ export function ClasseQuarta(props) {
             <li>{'$\\left\\{ \\left[ \\left( \\frac12 - \\frac23 \\right) : \\left(\\frac56 - \\frac{5}{12} \\right) \\cdot \\frac12 + \\frac34 \\right] : \\frac14 \\right\\} - \\frac23 \\cdot \\left(- \\frac35 \\right)$'}</li>
             <li>{'$ \\left( \\frac32 - 2 - \\frac14 \\right) - \\left( \\frac12 - \\frac54 \\right) $'}</li>
             <li>{'$ \\left( \\frac13 - 3 \\right) - \\left[ \\left( -\\frac12 + 2 \\right) + \\left( \\frac92 - 1 \\right) \\right] $'}</li>
-          </ol>
+          </ol> */}
           <h3>Equazioni lineari</h3>
           <p>Risolvi le seguenti equazioni.</p>
           <ol type='a'>
