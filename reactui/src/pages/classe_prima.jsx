@@ -20,6 +20,7 @@ export function ClassePrima(props) {
           <ClassNodeSection app={app} node_serial='013'/>
           <ClassNodeSection app={app} node_serial='018'/>
           <ClassNodeSection app={app} node_serial='019'/>
+          <ClassNodeSection app={app} node_serial='01A'/>
           {/* <h3>Cinque operazioni e precedenza</h3>
           <p>Ricordando le regole della precedenza, calcola il valore delle seguenti espressioni.</p>
           <ol type='a'>
