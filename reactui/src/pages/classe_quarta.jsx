@@ -14,6 +14,7 @@ export function ClasseQuarta(props) {
           <ClassNodeSection app={app} node_serial='017'/>
           <ClassNodeSection app={app} node_serial='018'/>
           <ClassNodeSection app={app} node_serial='01A'/>
+          <ClassNodeSection app={app} node_serial='01B'/>
           {/* <h3>Cinque operazioni e precedenza</h3>
           <p>Ricordando le regole della precedenza, calcola il valore delle seguenti espressioni.</p>
           <ol type='a'>
