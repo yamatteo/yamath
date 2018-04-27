@@ -14,6 +14,8 @@ export function ClasseQuinta(props) {
           <ClassNodeSection app={app} node_serial='01A'/>
           <ClassNodeSection app={app} node_serial='01B'/>
           <ClassNodeSection app={app} node_serial='01C'/>
+          <ClassNodeSection app={app} node_serial='020'/>
+          <ClassNodeSection app={app} node_serial='021'/>
           <h3>Studio di funzioni (dominio)</h3>
           <p>Stabilisci il dominio delle seguenti funzioni.</p>
           <ol type='a'>
