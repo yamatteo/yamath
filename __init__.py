@@ -14,7 +14,7 @@ import sys
 # except NameError:
 #     pass
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_admin import Admin
 from flask_json import FlaskJSON, JsonError, json_response, as_json
 from flask_cors import CORS
@@ -36,6 +36,7 @@ admin.add_view(ModelView(Profile, 'Profile'))
 
 
 fasthash_dictionary = {}
+fasthash_dictionary['mountain_ip'] = '192.168.1.3'
 # try:
 #     db_client = connect(host=os.environ['MONGODB_URI'])
 # except KeyError:
@@ -48,13 +49,20 @@ fasthash_dictionary = {}
 def index():
     return render_template('index.html')
 
+@app.route('/set_mountain')
+@as_json
+def set_mountain_ip():
+    fasthash_dictionary['mountain_ip'] = request.remote_addr
+    return {'mountain_ip':fasthash_dictionary['mountain_ip']}
+
+@app.route('/get_mountain')
+@as_json
+def get_mountain_ip():
+    return {'mountain_ip':fasthash_dictionary['mountain_ip']}
+
 from api import *
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=True)
     import unittest
-    unittest.main(verbose=False)
-    # from testing import TestSignupAndLogin, TestAdmin, TestProfile
-    # for Test in [TestSignupAndLogin, TestAdmin, TestProfile]:
-    #     suite = unittest.defaultTestLoader.loadTestsFromTestCase(Test)
-    #     unittest.TextTestRunner(verbosity=0).run(suite)
+    unittest.main(verbose=False)(verbosity=0).run(suite)
