@@ -49,11 +49,10 @@ fasthash_dictionary['mountain_ip'] = '192.168.1.3'
 def index():
     return render_template('index.html')
 
-@app.route('/set_mountain')
+@app.route('/set_mountain', methods=['POST',])
 @as_json
 def set_mountain_ip():
-    fasthash_dictionary['mountain_ip'] = request.remote_addr
-    print("Setting mip to", request.remote_addr)
+    fasthash_dictionary['mountain_ip'] = postdata.get("mountain_ip", '0.0.0.0')
     return {'mountain_ip':fasthash_dictionary['mountain_ip']}
 
 @app.route('/get_mountain')
