@@ -36,7 +36,7 @@ admin.add_view(ModelView(Profile, 'Profile'))
 
 
 fasthash_dictionary = {}
-fasthash_dictionary['mountain_ip'] = '192.168.1.3'
+fasthash_dictionary['mountain_ip'] = '0.0.0.0'
 # try:
 #     db_client = connect(host=os.environ['MONGODB_URI'])
 # except KeyError:
