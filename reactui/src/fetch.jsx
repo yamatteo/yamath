@@ -48,14 +48,32 @@
 //     return {status: 500, erroneous: true, result: "Error in api function."}
 //   })
 // }
+let mountain_ip
+fetch("http://yamatteo.pythonanywhere.com/get_mountain").then(res => {
+  if (res.status === 200) {
+    return res.json()
+  } else {
+    return res.text()
+  }
+}).then(res => {
+  if (res.mountain_ip) {
+    let mountain_ip = res.mountain_ip
+    console.log("Mip is", mountain_ip)
+    return true
+  } else {
+    let mountain_ip = '198.162.1.3'
+    return false
+  }
+})
 
 function timeout(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+
 export function api(url, data) {
-  // return fetch("http://127.0.0.1:5000"+url, { method: "POST", body: JSON.stringify(data) })
-  return fetch("http://yamatteo.pythonanywhere.com"+url, { method: "POST", body: JSON.stringify(data) })
+  return fetch(mountain_ip+url, { method: "POST", body: JSON.stringify(data) })
+  // return fetch("http://yamatteo.pythonanywhere.com"+url, { method: "POST", body: JSON.stringify(data) })
   .then(async res => {
     // return res.json()
     if (res.status === 200) {
