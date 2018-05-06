@@ -52,8 +52,8 @@ def index():
 @app.route('/set_mountain', methods=['POST',])
 @as_json
 def set_mountain_ip():
-    fasthash_dictionary['mountain_ip'] = postdata.get("mountain_ip", '0.0.0.0')
-    return {'mountain_ip':fasthash_dictionary['mountain_ip']}
+    fasthash_dictionary['mountain_ip'] = request.get_json(force=True).get("mountain_ip", '0.0.0.0')
+    return {'mountain_ip':fasthash_dictionary['mountain_ip'], "status":200}
 
 @app.route('/get_mountain')
 @as_json
